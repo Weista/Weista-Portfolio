@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>魏彤 · 作品集</title>
+<meta name="description" content="魏彤 (Vista Wei) — UI/UX 设计师与 AI 产品开发者。设计系统、数据驱动 B2B 体验与 AI 先行产品。" />
+<link rel="stylesheet" href="assets/fontawesome/css/all.min.css" />
+<style>
+  /* ===== Color tokens (matching the updated Figma variables) ===== */
+  :root{
+    /* ===== Design tokens  (source: assets/Color.zip → Hex Code.tokens.json) ===== */
+    --neutral-black:#030213; --neutral-gray-600:#3D3E40; --neutral-gray-200:#D7DADF;
+    --neutral-gray-100:#E5E8ED; --neutral-gray-50:#ECEFF4; --neutral-white:#FBFCFD;
+    --blue-50:#F1F7FD; --blue-100:#DEEDFC; --blue-200:#B7D8FA; --blue-300:#7CB8F8;
+    --blue-400:#3B96F7; --blue-500:#0774E9; --blue-600:#0554A8; --blue-700:#074383;
+    --indigo-100:#E1D5F2; --purple-100:#F1E7FF; --purple-200:#D6C6ED;
+    --green-500:#198754; --yellow-500:#FFC107;
+    --primary-600:var(--blue-600); --primary-500:var(--blue-500);
+    /* ===== Semantic aliases (token-driven, easy to swap) ===== */
+    --color-primary:var(--blue-600);   /* primary-600 */
+    --color-primary-2:var(--blue-500); /* primary-500 hover */
+    --color-accent:var(--blue-400);    /* accent / logo blue */
+    --color-bg:var(--neutral-white);
+    --color-surface:var(--neutral-gray-50);
+    --color-surface-2:var(--neutral-gray-100);
+    --color-white:#FFFFFF;
+    --color-ink:var(--neutral-black);
+    --color-body:var(--neutral-gray-600);
+    --color-muted:#6E7075;             /* derived (token set has no mid-gray) */
+    --color-line:var(--neutral-gray-200);
+    --blob-1:var(--blue-300); --blob-2:var(--blue-200); --blob-3:var(--blue-100);
+    --grad-hero:linear-gradient(180deg,var(--neutral-gray-50) 0%,var(--neutral-white) 100%);
+    --shadow:0 2px 8px rgba(3,40,84,.08);
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Microsoft YaHei','Helvetica Neue',Arial,sans-serif;color:var(--color-ink);background:var(--color-bg);line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{width:min(var(--maxw),calc(100% - 48px));margin:0 auto;}
+
+  /* ---- Nav ---- */
+  .nav{background:var(--color-surface);border-bottom:1px solid var(--color-line);position:sticky;top:0;z-index:60;transition:background .35s ease,border-color .35s ease;}
+  .nav .wrap{display:flex;align-items:center;height:72px;gap:20px;transition:max-width .4s cubic-bezier(.2,.7,.3,1),height .4s cubic-bezier(.2,.7,.3,1),background .35s ease,border-radius .4s ease,box-shadow .35s ease,padding .4s ease,margin .4s ease;}
+  /* Scrolled → frosted-glass floating capsule */
+  .nav.scrolled{background:transparent;border-bottom-color:transparent;padding-top:30px;}
+  .nav.scrolled .wrap{max-width:720px;margin:0 auto;height:56px;padding:0 20px;gap:16px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);border:1px solid rgba(255,255,255,.65);border-radius:999px;box-shadow:0 6px 24px rgba(3,40,84,.10);}
+  .nav.scrolled .logo{font-size:15px;}
+  .nav.scrolled .logo small{font-size:12px;}
+  .nav.scrolled .logo svg{width:25px;height:25px;}
+  .nav.scrolled .navlinks{gap:18px;}
+  .nav.scrolled .navlinks a{font-size:13.5px;}
+  .nav.scrolled .langbtn{padding:6px 12px;font-size:12.5px;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.02em;}
+  .logo svg{width:30px;height:30px;display:block;}
+  .logo small{font-weight:500;color:var(--color-muted);font-size:13px;}
+  .navlinks{margin-left:auto;display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
+  .navlinks a{font-size:14.5px;font-weight:500;color:var(--color-ink);padding:6px 2px;border-bottom:2px solid transparent;transition:.18s;}
+  .navlinks a:hover{color:var(--color-primary);border-color:var(--color-primary);}
+  .langbtn{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:13.5px;font-weight:600;color:var(--color-primary);border:1px solid var(--color-line);background:#fff;border-radius:999px;padding:7px 13px;cursor:pointer;transition:.18s;}
+  .langbtn:hover{border-color:var(--color-primary);box-shadow:var(--shadow);}
+  .nav-right{display:flex;align-items:center;gap:8px;}
+
+  /* ---- Hero ---- */
+  .hero{background:var(--grad-hero);position:relative;overflow:hidden;padding:78px 0 70px;text-align:center;}
+  .blob{position:absolute;border-radius:50%;filter:blur(46px);opacity:.52;pointer-events:none;will-change:transform;}
+  .blob.b1{width:560px;height:560px;background:radial-gradient(circle,var(--blob-1),var(--blob-2) 70%);top:-160px;left:-130px;}
+  .blob.b2{width:500px;height:500px;background:radial-gradient(circle,var(--blob-1),var(--blob-3) 70%);top:-140px;right:-110px;}
+  .hero .wrap{position:relative;z-index:2;}
+  .avatar{width:220px;height:220px;border-radius:50%;object-fit:cover;object-position:center;margin:0 auto 26px;border:6px solid #fff;box-shadow:0 6px 16px rgba(3,40,84,.10);}
+  .hero h1{font-size:clamp(34px,5vw,52px);font-weight:800;letter-spacing:-.03em;margin:0 0 14px;}
+  .hero h1 .accent{color:var(--color-primary);}
+  .hero p{max-width:640px;margin:0 auto 28px;color:var(--color-body);font-size:17px;}
+  /* ---- Buttons (unified: primary / outline / ghost) ---- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:999px;font-weight:600;font-size:15px;line-height:1;cursor:pointer;transition:.2s;text-decoration:none;font-family:inherit;border:1px solid transparent;white-space:nowrap;}
+  .btn svg{width:18px;height:18px;flex:0 0 auto;}
+  .btn.primary{background:var(--color-primary);color:#fff;box-shadow:0 3px 10px rgba(5,84,168,.16);}
+  .btn.primary:hover{background:var(--color-primary-2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(5,84,168,.18);}
+  .btn.outline{background:#fff;color:var(--color-primary);border-color:var(--color-line);}
+  .btn.outline:hover{border-color:var(--color-primary);box-shadow:var(--shadow);}
+  .btn.ghost{background:transparent;color:var(--color-body);border-color:transparent;padding:13px 16px;}
+  .btn.ghost:hover{color:var(--color-primary);}
+  .btn.block{width:100%;}
+  .hero-actions{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;}
+
+  /* ---- Section shared ---- */
+  section{padding:74px 0;}
+  .shead{text-align:center;margin-bottom:44px;}
+  .shead .eyebrow{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-primary);font-weight:700;}
+  .shead h2{font-size:clamp(30px,4.6vw,44px);font-weight:800;letter-spacing:-.02em;margin:10px 0 12px;}
+  .shead h2::after{content:"";display:block;width:58px;height:4px;border-radius:4px;background:var(--color-primary);margin:16px auto 0;}
+  .shead p{max-width:700px;margin:0 auto;color:var(--color-body);font-size:16px;}
+
+  /* ---- Who am I ---- */
+  .who{background:var(--color-bg);}
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px;}
+  .fcard{background:#fff;border:1px solid var(--neutral-gray-100);border-radius:16px;padding:24px;box-shadow:0 2px 10px rgba(3,40,84,.05);}
+  .fcard .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:var(--color-primary);background:var(--blue-200);margin-bottom:14px;}
+  .fcard .ic i{font-size:19px;line-height:1;}
+  .fcard h3{margin:0 0 8px;font-size:18px;font-weight:700;color:var(--color-primary);}
+  .fcard p{margin:0;color:var(--color-body);font-size:14.5px;}
+
+  /* ---- Skills ---- */
+  .skills{background:var(--color-surface);}
+  .skillgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px;max-width:900px;margin-inline:auto;}
+  .skillcard{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--color-line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);}
+  .skillcard .ico{width:52px;height:52px;flex:0 0 auto;display:grid;place-items:center;}
+  .skillcard .ico img{width:50px;height:50px;display:block;border-radius:50%;object-fit:cover;}
+  .skillcard .name{font-size:16px;font-weight:700;line-height:1.2;}
+  .skillcard .stars{display:flex;align-items:center;gap:2px;color:var(--yellow-500);font-size:15px;line-height:1;margin-top:5px;}
+  .skillcard .stars .off{color:var(--color-line);}
+  .skillcard .stars small{margin-left:4px;font-size:12px;color:var(--color-muted);font-weight:600;}
+
+  /* ---- Portfolio ---- */
+  .portfolio{background:#fff;}
+  .cardgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .pcard{display:block;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--color-line);box-shadow:var(--shadow);transition:.25s;position:relative;}
+  .pcard:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(3,40,84,.10);}
+  .pcard .cover{aspect-ratio:4/3;object-fit:cover;width:100%;}
+  .pcard .pbody{padding:18px 20px 20px;}
+  .pcard .pbody h3{margin:0 0 4px;font-size:18px;font-weight:700;}
+  .pcard .pbody span{font-size:13px;color:var(--color-muted);}
+  .pcard .go{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(5,84,168,.82);color:#fff;font-weight:700;font-size:16px;opacity:0;transition:.25s;text-align:center;padding:20px;}
+  .pcard:hover .go{opacity:1;}
+  .pcard.soon{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--color-muted);background:linear-gradient(160deg,#fff,#F2F5F9);border-style:dashed;min-height:260px;}
+  .pcard.soon .plus{font-size:34px;color:var(--color-primary);font-weight:300;margin-bottom:10px;}
+  .pcard.soon h3{margin:0 0 4px;font-size:17px;color:var(--color-ink);}
+  .pcard.soon span{font-size:13px;}
+
+  /* ---- Contact ---- */
+  .contact{background:#fff;}
+  .ccol{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;}
+  .contact h2{font-size:clamp(28px,4vw,40px);font-weight:800;margin:0 0 16px;}
+  .contact p{color:var(--color-body);font-size:15.5px;max-width:460px;}
+  .socials{display:flex;gap:14px;margin-top:26px;}
+  .socials a{width:42px;height:42px;border-radius:12px;background:#fff;border:1px solid var(--color-line);display:grid;place-items:center;color:var(--color-primary);box-shadow:var(--shadow);transition:.2s;}
+  .socials a:hover{background:var(--color-primary);color:#fff;}
+  form.contact-form{background:#fff;border-radius:18px;padding:26px;box-shadow:var(--shadow);border:1px solid var(--color-line);}
+  .contact-form label{display:block;font-size:13px;font-weight:600;color:var(--color-muted);margin:0 0 6px;}
+  .contact-form input,.contact-form textarea{width:100%;border:1px solid var(--color-line);border-radius:12px;padding:13px 15px;font-size:15px;font-family:inherit;margin-bottom:16px;background:var(--color-surface-2);transition:.2s;}
+  .contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:var(--color-primary);background:#fff;box-shadow:0 0 0 3px rgba(5,84,168,.12);}
+  .contact-form button{border:0;cursor:pointer;width:100%;}
+
+  /* ---- Mobile / tablet menu (hamburger) ---- */
+  .menu-toggle{display:none;width:42px;height:42px;border-radius:12px;border:1px solid var(--color-line);background:rgba(255,255,255,.7);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;transition:.2s;margin-left:6px;}
+  .menu-toggle span{display:block;width:18px;height:2px;background:var(--color-ink);border-radius:2px;transition:.25s;}
+  .menu-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .menu-toggle.open span:nth-child(2){opacity:0;}
+  .menu-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .menu-panel{display:none;position:absolute;left:50%;transform:translateX(-50%);top:calc(100% + 6px);width:min(720px,calc(100% - 32px));background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);border:1px solid rgba(255,255,255,.7);border-radius:20px;box-shadow:0 14px 36px rgba(3,40,84,.13);padding:10px;flex-direction:column;gap:4px;z-index:70;}
+  .menu-panel a{padding:13px 16px;border-radius:12px;color:var(--color-ink);font-weight:600;font-size:15px;}
+  .menu-panel a:hover{background:var(--color-surface-2);color:var(--color-primary);}
+  .menu-panel.open{display:flex;}
+
+  /* back to top */
+  .backtop{position:fixed;right:22px;bottom:22px;z-index:80;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--color-primary);border:1px solid var(--color-primary);cursor:pointer;box-shadow:0 4px 14px rgba(5,84,168,.14);opacity:0;visibility:hidden;transform:translateY(12px);transition:.25s;}
+  .backtop.show{opacity:1;visibility:visible;transform:none;}
+  .backtop:hover{background:var(--color-primary);color:#fff;transform:translateY(-2px);}
+  .backtop i{font-size:18px;}
+  @media print{.backtop{display:none;}}
+  footer{padding:26px 0 40px;background:var(--color-surface);text-align:center;color:var(--color-muted);font-size:13.5px;border-top:1px solid var(--color-line);}
+  footer a{color:var(--color-primary);font-weight:600;}
+
+  /* ---- Work Experience timeline ---- */
+  .exp{background:#fff;}
+  .timeline{position:relative;max-width:840px;margin:0 auto;}
+  .titem{position:relative;padding:0 0 36px 42px;border-left:2px solid var(--color-line);}
+  .titem:last-child{border-left-color:transparent;padding-bottom:0;}
+  .titem .dot{position:absolute;left:-9px;top:3px;width:16px;height:16px;border-radius:50%;background:var(--color-primary);box-shadow:0 0 0 4px rgba(5,84,168,.12);}
+  .titem .period{font-size:12.5px;font-weight:700;color:var(--color-primary);letter-spacing:.04em;text-transform:uppercase;}
+  .titem h3{margin:4px 0 2px;font-size:19px;font-weight:700;}
+  .titem .role{font-size:13.5px;color:var(--color-muted);margin:0 0 10px;}
+  .titem ul{margin:0;padding-left:18px;color:var(--color-body);font-size:14.5px;}
+  .titem ul li{margin-bottom:6px;}
+  @media (max-width:720px){ .titem{padding-left:30px;} .titem ul{font-size:14px;} }
+
+  /* Large screens: widen content */
+  @media (min-width:1440px){ :root{--maxw:1280px;} }
+  @media (min-width:1800px){ :root{--maxw:1400px;} }
+  /* Tablet & below: hamburger nav */
+  @media (max-width:1023px){
+    .navlinks{display:none;}
+    .nav .wrap{justify-content:space-between;gap:12px;}
+    .nav-right{margin-left:0;}
+    .menu-toggle{display:flex;}
+    .features{grid-template-columns:1fr 1fr;}
+    .cardgrid{grid-template-columns:1fr 1fr;}
+    .skillgrid{grid-template-columns:1fr 1fr;}
+    .ccol{grid-template-columns:1fr;}
+  }
+  /* Mobile */
+  @media (max-width:720px){
+    .nav .langbtn{font-size:12.5px;padding:6px 11px;}
+    .features,.cardgrid,.skillgrid{grid-template-columns:1fr;}
+    .blob.b1{width:360px;height:360px;left:-150px;} .blob.b2{width:340px;height:340px;right:-140px;}
+    .hero h1{font-size:clamp(32px,9vw,44px);}
+    .avatar{width:176px;height:176px;}
+    .hero h1{font-size:clamp(28px,8.5vw,38px);}
+    .blob.b1{width:300px;height:300px;left:-160px;} .blob.b2{width:280px;height:280px;right:-150px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <!-- Weista logo (callable component) -->
+      <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M27.446 23.0138L18.7082 31.8425C17.8746 32.6844 17.2134 33.6841 16.7623 34.7843C16.3111 35.8845 16.0789 37.0637 16.0789 38.2546C16.0789 39.4455 16.3111 40.6247 16.7623 41.7249C17.2134 42.8251 17.8746 43.8247 18.7082 44.6667L29.1783 34.0894C31.6359 31.6051 33.1046 28.2951 33.3052 24.7884C33.5058 21.2817 32.3578 17.8282 30.0733 15.1239L27.446 23.0138Z" fill="#3B96F7"/>
+        <path d="M20.5537 24.9862L29.2917 16.1575C30.1253 15.3156 30.7865 14.3159 31.2377 13.2157C31.6888 12.1155 31.921 10.9363 31.921 9.74542C31.921 8.55453 31.6888 7.37527 31.2377 6.27507C30.7865 5.17487 30.1253 4.17527 29.2917 3.33333L18.8217 13.9106C16.364 16.3949 14.8954 19.7049 14.6948 23.2116C14.4941 26.7183 15.6422 30.1718 17.9267 32.8761L20.5537 24.9862Z" fill="#3B96F7"/>
+      </svg>
+      <span data-i18n="brand">魏彤</span> <small data-i18n="brand.portfolio">· 作品集</small>
+    </a>
+    <nav class="navlinks">
+      <a href="#about" data-i18n="nav.about">关于我</a>
+      <a href="#experience" data-i18n="nav.exp">履历</a>
+      <a href="#skills" data-i18n="nav.skills">技能</a>
+      <a href="#portfolio" data-i18n="nav.portfolio">作品</a>
+      <a href="#contact" data-i18n="nav.contact">联系</a>
+    </nav>
+    <div class="nav-right">
+      <button class="langbtn" id="langBtn" type="button" aria-label="Switch language">🌐 <span data-i18n="lang">中文</span></button>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="menu-panel" id="menuPanel" aria-label="Mobile menu">
+    <a href="#about" data-i18n="nav.about">关于我</a>
+    <a href="#experience" data-i18n="nav.exp">履历</a>
+    <a href="#skills" data-i18n="nav.skills">技能</a>
+    <a href="#portfolio" data-i18n="nav.portfolio">作品</a>
+    <a href="#contact" data-i18n="nav.contact">联系</a>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <span class="blob b1"></span>
+  <span class="blob b2"></span>
+  <div class="wrap">
+    <img class="avatar" src="assets/hero-portrait.webp" alt="魏彤" />
+    <h1><span data-i18n="hero.greet">你好，我是</span> <span class="accent" data-i18n="hero.name">魏彤</span></h1>
+    <p data-i18n="hero.sub">UI/UX Designer。B端设计；设计系统构建；产品用户体验设计；数据可视化设计...</p>
+    <div class="hero-actions">
+      <a class="btn outline" href="resume/index.html" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <span data-i18n="hero.viewResume">查看在线简历</span>
+      </a>
+      <a class="btn primary" href="#about"><span data-i18n="hero.cta">了解更多</span> <span>→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHO AM I ===== -->
+<section class="who" id="about">
+  <div class="wrap">
+    <div class="shead">
+      <div class="eyebrow" data-i18n="about.eyebrow">关于</div>
+      <h2 data-i18n="about.title">我是谁</h2>
+      <p data-i18n="about.desc">我是一名驻地上海的UI/UX 设计师。长期负责包括B端设计、网页设计、设计系统构建等工作内容，十多年来与团队相互合作，将复杂抽象的业务流程与交互逻辑进行梳理重构，以直观友好的操作界面呈现给用户。</p>
+    </div>
+    <div class="features">
+      <div class="fcard"><div class="ic"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></div><h3 data-i18n="about.f1.t">设计系统</h3><p data-i18n="about.f1.d">Token 驱动的组件化设计系统，让大型多产品生态保持一致、可维护。</p></div>
+      <div class="fcard"><div class="ic"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></div><h3 data-i18n="about.f2.t">B端设计</h3><p data-i18n="about.f2.d">长期负责产品部门的 B 端与网页设计，将复杂业务流程重构为直观友好的界面。</p></div>
+      <div class="fcard"><div class="ic"><i class="fa-solid fa-robot" aria-hidden="true"></i></div><h3 data-i18n="about.f3.t">AI 工作流</h3><p data-i18n="about.f3.d">将 AI 工具融入设计流程，与团队协作提升交付效率与质量。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORK EXPERIENCE ===== -->
+<section class="exp" id="experience">
+  <div class="wrap">
+    <div class="shead">
+      <div class="eyebrow" data-i18n="exp.eyebrow">履历</div>
+      <h2 data-i18n="exp.title">工作经验</h2>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section class="skills" id="skills">
+  <div class="wrap">
+    <div class="shead">
+      <div class="eyebrow" data-i18n="skills.eyebrow">能力</div>
+      <h2 data-i18n="skills.title">技能</h2>
+      <p data-i18n="skills.desc">从 UI 起步的 PS 时代逐步成长为以 Figma 作为主流工具的 UI/UX 设计师，并结合前端知识与原型工具，辅助团队推进项目落地。AI 时代，依旧不断学习，合理利用 Figma MCP / Harness Agent 等 AI 工具，结合不同能力的 AI 模型提升设计工作效率与质量。</p>
+    </div>
+    <div class="skillgrid" id="skillGrid"></div>
+  </div>
+</section>
+
+<!-- ===== PORTFOLIO ===== -->
+<section class="portfolio" id="portfolio">
+  <div class="wrap">
+    <div class="shead">
+      <div class="eyebrow" data-i18n="portfolio.eyebrow">精选作品</div>
+      <h2 data-i18n="portfolio.title">作品</h2>
+      <p data-i18n="portfolio.desc">一组代表性项目。在下方 PROJECTS 数组中追加即可持续收录新作品。</p>
+    </div>
+    <div class="cardgrid" id="projectGrid"></div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="ccol">
+      <div>
+        <h2 data-i18n="contact.title">联系我</h2>
+        <p data-i18n="contact.desc">如果你有设计系统、B2B 产品或 AI 产品的挑战，欢迎与我聊合作、机会与新想法。</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M22 5.9c-.7.3-1.5.5-2.3.6.8-.5 1.4-1.3 1.7-2.2-.8.5-1.6.8-2.5 1a3.9 3.9 0 0 0-6.7 3.6A11 11 0 0 1 4.4 4.7a3.9 3.9 0 0 0 1.2 5.2c-.6 0-1.2-.2-1.7-.5v.1a3.9 3.9 0 0 0 3.1 3.8c-.6.2-1.2.2-1.8.1a3.9 3.9 0 0 0 3.6 2.7A7.9 7.9 0 0 1 2.6 18a11 11 0 0 0 6 1.8c7.2 0 11.1-6 11.1-11.1v-.5c.8-.6 1.4-1.3 2-2.1z"/></svg></a>
+        </div>
+      </div>
+      <form class="contact-form" action="#" onsubmit="return false;">
+        <label for="n" data-i18n="form.name">姓名</label>
+        <input id="n" type="text" data-ph="form.namePh" placeholder="你的姓名" />
+        <label for="e" data-i18n="form.email">邮箱</label>
+        <input id="e" type="email" data-ph="form.emailPh" placeholder="you@example.com" />
+        <label for="m" data-i18n="form.message">留言</label>
+        <textarea id="m" rows="4" data-ph="form.messagePh" placeholder="在这里输入你的留言"></textarea>
+        <button class="btn primary" type="submit" data-i18n="form.submit">联系</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap"><span data-i18n="footer">© 2026 魏彤 · 由我设计与构建</span> · <a href="resume/index.html" target="_blank" data-i18n="footer.resume">查看简历</a></div>
+</footer>
+
+<script>
+  // ======================================================
+  //  I18N — 中文为主，英文围绕中文进行更新 (English follows Chinese)
+  //  在 zh 里改文案，再对应更新 en。
+  // ======================================================
+  const I18N = {
+    zh: {
+      "brand":"魏彤", "brand.portfolio":"· 作品集",
+      "nav.about":"关于我","nav.exp":"履历","nav.skills":"技能","nav.portfolio":"作品","nav.contact":"联系",
+      "lang":"中文",
+      "hero.greet":"你好，我是","hero.name":"魏彤",
+      "hero.sub":"UI/UX Designer。B端设计；设计系统构建；产品用户体验设计；数据可视化设计...",
+      "hero.viewResume":"查看在线简历",
+      "hero.cta":"了解更多",
+      "about.eyebrow":"关于","about.title":"我是谁",
+      "about.desc":"我是一名驻地上海的UI/UX 设计师。长期负责包括B端设计、网页设计、设计系统构建等工作内容，十多年来与团队相互合作，将复杂抽象的业务流程与交互逻辑进行梳理重构，以直观友好的操作界面呈现给用户。",
+      "about.f1.t":"设计系统","about.f1.d":"Token 驱动的组件化设计系统，让大型多产品生态保持一致、可维护。",
+      "about.f2.t":"B端设计","about.f2.d":"长期负责产品部门的 B 端与网页设计，将复杂业务流程重构为直观友好的界面。",
+      "about.f3.t":"AI 工作流","about.f3.d":"将 AI 工具融入设计流程，与团队协作提升交付效率与质量。",
+      "exp.eyebrow":"履历","exp.title":"工作经验","skills.eyebrow":"能力","skills.title":"技能",
+      "skills.desc":"从 UI 起步的 PS 时代逐步成长为以 Figma 作为主流工具的 UI/UX 设计师，并结合前端知识与原型工具，辅助团队推进项目落地。AI 时代，依旧不断学习，合理利用 Figma MCP / Harness Agent 等 AI 工具，结合不同能力的 AI 模型提升设计工作效率与质量。","s1":"Figma","s2":"设计 Token","s3":"SwiftUI","s4":"React / Tailwind","s5":"Vue","s6":"无障碍 (WCAG)","s7":"数据可视化","s8":"RAG 与 AI 原型","s9":"设计运营",
+      "portfolio.eyebrow":"精选作品","portfolio.title":"作品","portfolio.desc":"一组代表性项目。在下方 PROJECTS 数组中追加即可持续收录新作品。",
+      "contact.title":"联系我","contact.desc":"如果你有设计系统、B2B 产品或 AI 产品的挑战，欢迎与我聊合作、机会与新想法。",
+      "form.name":"姓名","form.namePh":"你的姓名","form.email":"邮箱","form.emailPh":"you@example.com","form.message":"留言","form.messagePh":"在这里输入你的留言","form.submit":"联系",
+      "footer":"© 2026 魏彤 · 由我设计与构建","footer.resume":"查看简历"
+    },
+    en: {
+      "brand":"Vista Wei","brand.portfolio":"· Portfolio",
+      "nav.about":"Who am I","nav.exp":"Resume","nav.skills":"Skills","nav.portfolio":"Portfolio","nav.contact":"Contact",
+      "lang":"EN",
+      "hero.greet":"Hi, I'm","hero.name":"Vista Wei",
+      "hero.sub":"Designing accessible, data-driven product experiences for global enterprise teams. Specializing in design systems, B2B analytics, and AI-first products — always exploring what's next.",
+      "hero.viewResume":"View My Resume",
+      "hero.cta":"Read more",
+      "about.eyebrow":"About","about.title":"Who am I",
+      "about.desc":"I'm a UI/UX designer based in Shanghai. Over the past decade-plus, I've led B2B design, web design, and design system building — partnering with teams to reframe complex, abstract business flows and interaction logic into intuitive, friendly interfaces.",
+      "about.f1.t":"Design Systems","about.f1.d":"Token-driven, component-first systems keep large multi-product ecosystems consistent and maintainable.",
+      "about.f2.t":"B2B Design","about.f2.d":"Long-running product-org B2B & web design that reframes complex workflows into intuitive, friendly interfaces.",
+      "about.f3.t":"AI Workflow","about.f3.d":"Weave AI tools into the design flow and collaborate with teams to boost efficiency and delivery quality.",
+      "exp.eyebrow":"Resume","exp.title":"Work Experience","skills.eyebrow":"Capabilities","skills.title":"Skills",
+      "skills.desc":"I started in the Photoshop era of UI design and grew into a UI/UX designer whose primary tool is Figma — combining front-end knowledge with prototyping tools to help teams ship products. In the AI era, I keep learning and use AI tools like Figma MCP and Harness Agent with diverse AI models to improve design efficiency and quality.","s1":"Figma","s2":"Design Tokens","s3":"SwiftUI","s4":"React / Tailwind","s5":"Vue","s6":"Web Accessibility (WCAG)","s7":"Data Visualization","s8":"RAG & AI Prototyping","s9":"Design Ops",
+      "portfolio.eyebrow":"Selected Work","portfolio.title":"Portfolio","portfolio.desc":"A collection of representative projects. Append to the PROJECTS array below to publish more.",
+      "contact.title":"Contact me","contact.desc":"Have a design system, B2B product, or AI product challenge? Let's talk about collaboration, opportunities, and new ideas.",
+      "form.name":"Name","form.namePh":"Your name","form.email":"Email","form.emailPh":"you@example.com","form.message":"Message","form.messagePh":"Type your message here","form.submit":"Contact",
+      "footer":"© 2026 Vista Wei · Designed & built by me","footer.resume":"View resume"
+    }
+  };
+
+  // ======================================================
+  //  PROJECTS — each project gets a zh/en title+sub.
+  // ======================================================
+  const PROJECTS = [
+    {
+      title: { zh:"CompAnalyst 设计系统", en:"CompAnalyst Design System" },
+      sub:   { zh:"设计系统 · Salary.com · 2026", en:"Design System · Salary.com · 2026" },
+      href: "project/companalyst-design-system/index.html",
+      cover: "assets/projects/companalyst-cover.webp"
+    },
+    {
+      title: { zh:"Salary Talent", en:"Salary Talent" },
+      sub:   { zh:"智能人力资源管理系统 · Salary.com · 2026", en:"Intelligent HR Management System · Salary.com · 2026" },
+      href:  "project/salary-talent/index.html",
+      cover: "assets/projects/salary-talent-cover.webp",
+      pos:   "left"
+    },
+    { title:{zh:"下一个作品",en:"Your next project"}, sub:{zh:"进行中——告诉我你在做什么",en:"In progress — tell me what you're building"}, soon:true }
+  ];
+
+  // ======================================================
+  //  EXPERIENCE — work experience timeline (zh/en).
+  //  Add an entry to publish a new role. points = array of {zh, en}.
+  // ======================================================
+  const EXPERIENCE = [
+    {
+      period:  { zh:"2016.10 – 至今", en:"2016.10 – Present" },
+      company: { zh:"尚励信息技术（上海）有限公司", en:"Shangli Information Technology (Shanghai) Co., Ltd." },
+      role:    { zh:"UI Manager · 隶属 PM 部门", en:"UI Manager · PM Department" },
+      points: [
+        { zh:"长期负责与美国总部产品团队的跨时区沟通协作，协同PM统筹需求与设计进程直至项目顺利上线。具备良好的英语表达能力，持续与美国设计团队保持技术同步，并承担设计技术及工作流培训。", en:"Lead long-term cross-timezone collaboration with the US HQ product team; work with PM to align requirements and drive the design process through to a successful launch. Strong English communication, sustained technical alignment with the US design team, and design & workflow training." },
+        { zh:"主导公司级 B 端设计系统的搭建与维护，管理设计 Token、原子组件与组件库，把控整体产品风格。", en:"Lead the company-wide B2B design system — tokens, atomic components, and libraries — owning overall product style." },
+        { zh:"负责 B 端产品需求梳理、界面与交互设计，涵盖 AI 功能与需求设计。", en:"Own B2B requirements, UI/UX design, and AI feature & interaction design." },
+        { zh:"负责设计团队技能培训与内容设计培训。", en:"Lead design team upskilling and content design training." }
+      ]
+    },
+    {
+      period:  { zh:"2014.12 – 2016.08", en:"2014.12 – 2016.08" },
+      company: { zh:"上海翼拍网络科技有限公司", en:"Shanghai Yipai Network Technology Co., Ltd." },
+      role:    { zh:"UI / 交互设计师", en:"UI / Interaction Designer" },
+      points: [
+        { zh:"负责移动端 APP UI、Web 与后台管理系统界面设计，输出交互流程、原型与动效。", en:"Designed mobile app UI, web, and admin panels; delivered flows, prototypes, and motion." },
+        { zh:"完成公司 Logo、产品宣传与运营物料设计。", en:"Created brand logo, product marketing, and operations collateral." },
+        { zh:"协同电信研究院完成“天翼网关”项目驻场设计与交付。", en:"Delivered on-site design for China Telecom's 'Tianyi Gateway' with the Telecom Research Institute." }
+      ]
+    },
+    {
+      period:  { zh:"2014.02 – 2014.09", en:"2014.02 – 2014.09" },
+      company: { zh:"上海思龙科学仪器有限公司", en:"Shanghai Silong Scientific Instrument Co., Ltd." },
+      role:    { zh:"视觉设计师", en:"Visual Designer" },
+      points: [
+        { zh:"负责外贸平台页面、活动页与宣传品设计，并优化产品关键词（SEO）。", en:"Designed foreign-trade platform pages, campaigns, and collateral; optimized product keywords (SEO)." },
+        { zh:"独立设计全英文年度产品宣传册并跟进印刷交付。", en:"Independently designed the all-English annual product brochure and followed print delivery." }
+      ]
+    }
+  ];
+
+  const SKILLS = [
+    { name:{zh:"Figma",en:"Figma"}, level:4, icon:"assets/Skill-Figma.svg" },
+    { name:{zh:"Adobe XD",en:"Adobe XD"}, level:4, icon:"assets/Skill-XD.svg" },
+    { name:{zh:"Photoshop",en:"Photoshop"}, level:4, icon:"assets/Skill-PS.svg" },
+    { name:{zh:"Illustrator",en:"Illustrator"}, level:3, icon:"assets/Skill-Ai.svg" },
+    { name:{zh:"Axure",en:"Axure"}, level:3, icon:"assets/Skill-Axure.svg" },
+    { name:{zh:"CSS3",en:"CSS3"}, level:3, icon:"assets/Skill-CSS.svg" },
+  ];
+
+  let lang = "zh";
+  const $ = (sel) => document.querySelectorAll(sel);
+
+  function applyLang() {
+    const dict = I18N[lang];
+    document.documentElement.lang = lang === "zh" ? "zh" : "en";
+    $("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (dict[key] != null) el.textContent = dict[key];
+    });
+    $("[data-ph]").forEach(el => {
+      const key = el.getAttribute("data-ph");
+      if (dict[key] != null) el.placeholder = dict[key];
+    });
+    renderProjects();
+    renderExperience();
+    renderSkills();
+  }
+
+  function renderProjects() {
+    const dict = I18N[lang];
+    const grid = document.getElementById("projectGrid");
+    grid.innerHTML = "";
+    PROJECTS.forEach(p => {
+      let card;
+      if (p.soon) {
+        card = document.createElement("div");
+        card.className = "pcard soon";
+        card.innerHTML = '<div class="plus">＋</div><h3>' + p.title[lang] + '</h3><span>' + p.sub[lang] + '</span>';
+      } else {
+        card = document.createElement("a");
+        card.className = "pcard"; card.href = p.href;
+        card.innerHTML = '<img class="cover" loading="lazy" decoding="async" style="object-position:' + (p.pos || 'center') + '" src="' + p.cover + '" alt="' + p.title[lang] + '" />' +
+          '<div class="pbody"><h3>' + p.title[lang] + '</h3><span>' + p.sub[lang] + '</span></div>' +
+          '<div class="go">' + (lang === "zh" ? "查看案例 →" : "View case study →") + '</div>';
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  function renderExperience() {
+    const wrap = document.getElementById("timeline");
+    if (!wrap) return;
+    wrap.innerHTML = "";
+    EXPERIENCE.forEach(e => {
+      const it = document.createElement("div");
+      it.className = "titem";
+      it.innerHTML = '<span class="dot"></span>' +
+        '<div class="period">' + e.period[lang] + '</div>' +
+        '<h3>' + e.company[lang] + '</h3>' +
+        '<p class="role">' + e.role[lang] + '</p>' +
+        '<ul>' + e.points.map(p => '<li>' + p[lang] + '</li>').join('') + '</ul>';
+      wrap.appendChild(it);
+    });
+  }
+
+  function renderSkills() {
+    const grid = document.getElementById("skillGrid");
+    if (!grid) return;
+    grid.innerHTML = SKILLS.map(sk => {
+      const stars = Array.from({length:5}, (_,i) => '<span class="' + (i < sk.level ? '' : 'off') + '">★</span>').join('');
+      return '<div class="skillcard">' +
+        '<div class="ico"><img src="' + sk.icon + '" alt="' + sk.name[lang] + '"></div>' +
+        '<div class="info"><div class="name">' + sk.name[lang] + '</div>' +
+        '<div class="stars">' + stars + '<small>' + sk.level + '/5</small></div></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  document.getElementById("langBtn").addEventListener("click", () => {
+    lang = lang === "zh" ? "en" : "zh";
+    applyLang();
+  });
+
+  applyLang();
+
+  // ===== Mobile menu toggle =====
+  const menuToggle = document.getElementById('menuToggle');
+  const menuPanel = document.getElementById('menuPanel');
+  function closeMenu(){ menuPanel.classList.remove('open'); menuToggle.classList.remove('open'); menuToggle.setAttribute('aria-expanded','false'); }
+  menuToggle.addEventListener('click', (e)=>{ e.stopPropagation(); const open = menuPanel.classList.toggle('open'); menuToggle.classList.toggle('open', open); menuToggle.setAttribute('aria-expanded', open); });
+  menuPanel.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
+  document.addEventListener('click', (e)=>{ if(!e.target.closest('.nav')) closeMenu(); });
+
+  // ===== Scroll effects: floating capsule nav + hero parallax =====
+  const nav = document.querySelector('.nav');
+  const blob1 = document.querySelector('.blob.b1');
+  const blob2 = document.querySelector('.blob.b2');
+  let ticking = false;
+  function onScroll() {
+    const y = window.scrollY || window.pageYOffset || 0;
+    // shrink header into a frosted-glass capsule after some scroll
+    nav.classList.toggle('scrolled', y > 48);
+    const backtop = document.getElementById('backtop');
+    if (backtop) backtop.classList.toggle('show', y > 380);
+    // parallax: blobs drift at a slower rate than the page (depth)
+    if (blob1) blob1.style.transform = 'translate3d(0,' + (y * 0.16) + 'px,0)';
+    if (blob2) blob2.style.transform = 'translate3d(0,' + (y * 0.10) + 'px,0)';
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
+  }, { passive: true });
+  onScroll();
+  document.addEventListener('click', (e) => {
+    if (e.target.closest && e.target.closest('#backtop')) window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+<button class="backtop" id="backtop" type="button" aria-label="Back to top" title="回到顶部"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+</body>
+</html>
