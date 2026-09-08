@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Salary Talent · 项目案例</title>
+<meta name="description" content="Salary Talent — 智能排班与时间考勤的人才管理平台案例。仪表盘、页面模块与智能排班功能。" />
+<style>
+  :root{
+    --plum:#6B2A6E; --plum-2:#4A1A4E; --magenta:#C0399B; --ink:#131321; --body:#3D3E40;
+    --bg:#F6F2F7; --surface:#FFFFFF; --line:#EBE3EC; --muted:#6E7075;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Helvetica Neue',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased;}
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{width:min(1100px,calc(100% - 40px));margin:0 auto;}
+
+  .backlink{position:fixed;top:16px;left:16px;z-index:50;display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--plum);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.06);transition:.2s;}
+  .backlink:hover{background:var(--plum);color:#fff;}
+
+  .hero{padding:64px 0 22px;}
+  .hero .tag{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta);font-weight:700;}
+  .hero h1{font-size:clamp(34px,6vw,64px);letter-spacing:-.03em;font-weight:800;margin:8px 0 6px;}
+  .hero h1 .accent{color:var(--plum);}
+  .hero p{max-width:700px;color:var(--body);font-size:16px;margin:0 0 26px;}
+  .hero .cover{width:100%;aspect-ratio:16/7;object-fit:cover;object-position:center bottom;border-radius:20px;border:1px solid var(--line);box-shadow:0 16px 46px rgba(107,42,110,.16);}
+
+  .sect{padding:46px 0;}
+  .shead{margin-bottom:22px;}
+  .shead .eyebrow{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--magenta);font-weight:700;}
+  .shead h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em;margin:8px 0 6px;}
+  .shead h2::after{content:"";display:block;width:52px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--plum),var(--magenta));margin-top:12px;}
+  .shead p{max-width:720px;color:var(--body);font-size:15px;}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(107,42,110,.06);}
+  .card img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;}
+  .card .cap{padding:14px 18px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted);}
+  .card .cap b{color:var(--ink);font-size:14px;display:block;margin-bottom:3px;}
+  .full{grid-column:1 / -1;}
+  .full img{aspect-ratio:auto;max-height:640px;object-fit:contain;background:#fff;}
+
+  footer{padding:30px 0;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:20px;}
+  @media (max-width:760px){ .grid{grid-template-columns:1fr;} .backlink{top:12px;left:12px;} }
+</style>
+</head>
+<body>
+<a class="backlink" href="../../index.html">← 返回作品集</a>
+
+<div class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="tag">Salary.com · Talent Platform</div>
+    <h1>Salary <span class="accent">Talent</span></h1>
+    <p>面向企业的<strong>智能人力资源管理系统</strong>，覆盖招聘、入职、考勤与智能排班等模块，并集合人力资源薪酬数据服务等内容，为用户提供一体化管理和数据分析。</p>
+    <img class="cover" src="images/Cover.webp" alt="Salary Talent 封面" />
+  </section>
+
+  <!-- 概览 / OVERVIEW -->
+  <section class="sect" id="overview">
+    <div class="shead">
+      <div class="eyebrow">Overview · 概览</div>
+      <h2>项目概览</h2>
+      <p>在此补充项目背景、目标与你的角色。以下是产品核心界面示例。</p>
+    </div>
+    <div class="grid">
+      <div class="card"><img loading="lazy" decoding="async" src="images/review-dashboard.jpeg" alt="仪表盘-招聘分析"><div class="cap"><b>Recruiting Analytics · Dashboard</b>招聘分析看板：Onboarding 仪表盘、Operational Readiness、Active Onboardings 列表。</div></div>
+      <div class="card"><img loading="lazy" decoding="async" src="images/review-recruiting-analytics.jpeg" alt="Recruiting Analytics"><div class="cap"><b>Recruiting Analytics</b>招聘分析数据页面模块。</div></div>
+    </div>
+  </section>
+
+  <!-- 智能排班 / SMART SCHEDULING -->
+  <section class="sect" id="scheduling">
+    <div class="shead">
+      <div class="eyebrow">Time &amp; Attendance · 智能排班系统</div>
+      <h2>智能排班系统</h2>
+      <p>化繁为简，将复杂排班收拢为一张智能易用的可视化排班工作台；适配多行业、多工种场景，主管只需通过直观的交互，即可快速为团队成员完成班次分配。<br>
+        · <b>需求驱动排班</b> —— 根据客流、工作量等业务信号自动测算所需人力，按岗位与角色独立配比，人力缺口一目了然。<br>
+        · <b>合规硬门禁</b> —— 将劳动法规与自定义规则分层固化，工时、休息、岗位资质等任何违规项都会被系统自动拦截并留痕，随时可出具合规依据。<br>
+        · <b>多目标智能优化</b> —— 统筹成本、公平、合规与员工偏好等多重目标，一键生成均衡排班并自动补齐空缺；开放班次经校验后开放认领，员工可自助抢班或申请换班。</p>
+      <p style="color:var(--muted);font-size:13.5px;">Smart Scheduling turns complex schedules into a hands-on workbench for retail, healthcare, F&amp;B, manufacturing, and more — demand-driven headcount, compliance hard gates, and multi-objective optimization.</p>
+    </div>
+    <div class="grid">
+      <div class="card"><img loading="lazy" decoding="async" src="images/l1-schedule-periods.jpeg" alt="排班周期"><div class="cap"><b>Schedule Periods</b>排班周期列表（Time &amp; Attendance）。</div></div>
+      <div class="card"><img loading="lazy" decoding="async" src="images/l2-scheduling-workbench.jpeg" alt="排班工作台"><div class="cap"><b>Scheduling Workbench · Edit Mode</b>排班工作台（编辑模式）视图。</div></div>
+      <div class="card"><img loading="lazy" decoding="async" src="images/user-my-schedule.jpeg" alt="我的排班"><div class="cap"><b>My Schedule</b>员工个人排班（Week / Month、Scheduled / Needs You / Open Shifts 指标）。</div></div>
+      <div class="card"><img loading="lazy" decoding="async" src="images/modal-open-shifts.jpeg" alt="Open Shifts 弹窗"><div class="cap"><b>Open Shifts</b>开放班次认领弹窗（Eligible / Can't claim 状态）。</div></div>
+    </div>
+  </section>
+</div>
+
+<footer>Salary Talent · 案例页（由作品集内嵌，内容/描述待补充）</footer>
+</body>
+</html>

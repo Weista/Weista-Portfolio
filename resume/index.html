@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>魏彤 · 简历（阅读版）</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  @page{size:A4; margin:16mm 15mm;}
+  body{
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC","Noto Sans SC",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    color:#1a1a1a; background:#f2f2f2; font-size:11pt; line-height:1.72;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    width:210mm; max-width:210mm; margin:20px auto; background:#fff;
+    padding:16mm 15mm; box-shadow:0 4px 22px rgba(0,0,0,.06);
+  }
+  /* header */
+  .head{display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1.5px solid #1a1a1a; padding-bottom:14px; margin-bottom:22px;}
+  .head .id .name{font-size:24pt; font-weight:700; letter-spacing:.5px; line-height:1.1;}
+  .head .id .role{font-size:12.5pt; color:#333; margin-top:6px;}
+  .head .meta{text-align:right; font-size:10pt; color:#333; line-height:1.85;}
+  .head .meta .c{display:block; white-space:nowrap;}
+  .head .photo{width:64px; height:80px; margin-left:16px; flex:0 0 auto;}
+  .head .photo img{width:64px; height:80px; border-radius:10px; object-fit:cover; display:block;}
+
+  .tagline{font-size:10pt; color:#444; margin-bottom:22px;}
+
+  /* section */
+  .sec{margin-bottom:20px;}
+  .sec h2{font-size:12.5pt; font-weight:700; letter-spacing:1px; color:#111;
+    border-bottom:1px solid #bbb; padding-bottom:5px; margin-bottom:12px;}
+  .sec h2 .en{float:right; font-size:9pt; font-weight:400; color:#888; letter-spacing:1.5px;}
+
+  /* summary */
+  .summary p{font-size:10.5pt; color:#222; margin-bottom:6px;}
+  .summary ul{list-style:none;}
+  .summary li{font-size:10.5pt; color:#222; padding-left:14px; position:relative; margin-bottom:4px;}
+  .summary li::before{content:"•"; position:absolute; left:2px; color:#1a1a1a;}
+
+  /* entries */
+  .job{margin-bottom:16px;}
+  .job .jh{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:2px 12px;}
+  .job .jh .org{font-size:12pt; font-weight:700;}
+  .job .jh .dt{font-size:10pt; color:#666; white-space:nowrap;}
+  .job .role{font-size:10.5pt; color:#333; font-weight:600; margin:2px 0 6px;}
+  .job ul{list-style:none;}
+  .job li{font-size:10.5pt; color:#222; padding-left:14px; position:relative; margin-bottom:3px;}
+  .job li::before{content:"•"; position:absolute; left:2px; color:#1a1a1a;}
+
+  /* projects */
+  .proj{margin-bottom:14px;}
+  .proj .ph{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:2px 12px;}
+  .proj .ph .t{font-size:11.5pt; font-weight:700;}
+  .proj .ph .m{font-size:9.5pt; color:#666; white-space:nowrap;}
+  .proj p{font-size:10.5pt; color:#222; margin-top:4px;}
+
+  /* edu + skills */
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  .grid h3{font-size:11pt; font-weight:700; margin-bottom:8px;}
+  .edu .sch{font-size:11pt; font-weight:700;}
+  .edu .major{font-size:10.5pt; color:#333; margin-top:2px;}
+  .edu .date{font-size:10pt; color:#666; margin-top:2px;}
+  .edu .cert{font-size:10.5pt; color:#222; margin-top:10px;}
+  .skills{display:block; font-size:10.5pt; color:#222; line-height:2;}
+  .skills b{color:#111;}
+
+  @media print{
+    body{background:#fff;}
+    .page{box-shadow:none; margin:0; width:auto; padding:0;}
+  }
+  @media (max-width:840px){
+    .page{width:auto; margin:14px; padding:26px; box-shadow:none;}
+    .grid{grid-template-columns:1fr;}
+  }
+  /* ---- Buttons (unified: primary / outline) ---- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 18px;border-radius:999px;font-size:12.5px;font-weight:600;line-height:1;text-decoration:none;transition:.2s;font-family:inherit;border:1px solid transparent;white-space:nowrap;cursor:pointer;}
+  .btn svg{width:15px;height:15px;flex:0 0 auto;}
+  .btn.primary{background:#0554A8;color:#fff;box-shadow:0 6px 18px rgba(5,84,168,.28);}
+  .btn.primary:hover{background:#083f7e;transform:translateY(-1px);}
+  .btn.outline{background:#fff;color:#0554A8;border-color:#dde6ee;box-shadow:0 6px 14px rgba(5,84,168,.10);}
+  .btn.outline:hover{background:#0554A8;color:#fff;}
+  /* floating actions */
+  .dlbtn{position:fixed;top:18px;right:18px;z-index:20;}
+  .backbtn{position:fixed;top:18px;left:18px;z-index:20;}
+  @media print{.dlbtn,.backbtn{display:none;}}
+</style>
+</head>
+<body>
+<a class="dlbtn btn primary" href="Vista-Wei-Resume.pdf" download title="下载 PDF">
+  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+  下载 PDF
+</a>
+<a class="backbtn btn outline" href="../index.html" title="返回作品集">
+  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+  返回作品集
+</a><div class="page">
+
+  <div class="head">
+    <div class="id">
+      <div class="name">魏彤</div>
+      <div class="role">UI Manager · 设计系统负责人</div>
+    </div>
+    <div class="meta">
+      <span class="c">手机　135 2450 3179</span>
+      <span class="c">邮箱　leiniao2086@hotmail.com</span>
+      <span class="c">现居　上海 · 徐汇区</span>
+    </div>
+    <div class="photo"><img decoding="async" src="../assets/hero-portrait.webp" alt="求职照片"></div>
+  </div>
+
+  <div class="tagline">12 年+ 产品与交互设计经验 ｜ B 端设计系统 · 交互设计 ｜ 美方总部协作 · AI 工作流 ｜ 求职意向：设计系统负责人 / 高级交互设计师</div>
+
+  <div class="sec">
+    <h2>核心职能<span class="en">PROFILE</span></h2>
+    <div class="summary">
+      <ul>
+        <li>12 年+ B 端产品与交互设计经验，覆盖移动端 / Web / 门户网站 / 宣传物料。</li>
+        <li>具备从 0 到 1 搭建公司级 B 端设计系统能力：Design Token、原子组件、模块化组件库，覆盖 Figma / Adobe XD / 线上图标库多端输出。</li>
+        <li>扎实前端基础，能与开发高效协同落地；长期与美国总部设计 / 市场团队跨时区协作，具备项目管理与团队培训能力。</li>
+        <li>近期将 AI 工具引入设计工作流，显著提升团队效率与交付质量。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>工作经历<span class="en">EXPERIENCE</span></h2>
+
+    <div class="job">
+      <div class="jh"><span class="org">尚励信息技术（上海）有限公司</span><span class="dt">2016.10 – 至今</span></div>
+      <div class="role">UI Manager（隶属 PM 部门）</div>
+      <ul>
+        <li>长期负责与美国总部产品团队的跨时区沟通协作，协同PM统筹需求与设计进程直至项目顺利上线。具备良好的英语表达能力，持续与美国设计团队保持技术同步，并承担设计技术及工作流培训。</li>
+        <li>负责公司整体设计系统搭建与维护、B 端设计物料管理，把控产品设计方案与整体风格。</li>
+        <li>主导 B 端产品需求梳理、界面与交互设计，涵盖 AI 功能与需求设计。</li>
+        <li>负责设计团队的技能培训与内容设计培训。</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="jh"><span class="org">上海翼拍网络科技有限公司</span><span class="dt">2014.12 – 2016.08</span></div>
+      <div class="role">UI / 交互设计师</div>
+      <ul>
+        <li>负责移动端 APP UI、Web、后台管理系统界面设计；输出交互流程、原型与动效。</li>
+        <li>完成公司 logo、产品宣传与运营物料设计。</li>
+        <li>协同电信研究院，完成“天翼网关”项目驻场设计与交付。</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="jh"><span class="org">上海思龙科学仪器有限公司</span><span class="dt">2014.02 – 2014.09</span></div>
+      <div class="role">视觉设计师</div>
+      <ul>
+        <li>负责外贸平台页面、活动页与宣传品设计；优化产品关键词（SEO）。</li>
+        <li>独立设计全英文年度产品宣传册，并跟进印刷交付。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>项目经历<span class="en">PROJECTS</span></h2>
+
+    <div class="proj">
+      <div class="ph"><span class="t">Salary.com 官网改版</span><span class="m">尚励信息　2025.12 – 至今</span></div>
+      <p>受美国总部委托，负责官网整套焕新设计（设计系统 + 示例页），覆盖上百页页面。项目周期紧、工作量大：通过快速解构既定设计系统、梳理工作流、合理分工并开展团队业务培训，同步协调美方设计与市场团队需求，逐项响应开发过程中的前端问题，约 1.5 个月内如期交付全部页面。期间补齐设计系统中缺失的组件与规范，有效缓解团队时效压力；并与产品、开发协作，对造成页面流量下滑的不合理组件进行结构优化，保障上线后的访问表现。</p>
+    </div>
+
+    <div class="proj">
+      <div class="ph"><span class="t">Salary.com CompAnalyst 平台设计维护</span><span class="m">尚励信息　2017.10 – 至今</span></div>
+      <p>作为中国团队的设计执行负责人，承接美方总部下发的整套设计更新方案，落实到 CompAnalyst 平台的整体焕新，覆盖前端框架、组件样式与具体页面构建。长期负责设计维护与迭代，与产品经理共同推进新功能上线，与开发协作解决 UI 问题，并结合用户反馈持续优化体验。伴随设计工具演进逐步完善设计系统：先后建立公司线上图标库及 XD、Figma 版本组件库；进入 AI 时代后创建团队可复用的设计 Skill，辅助开发进行界面规范对齐，提升协作效率。</p>
+    </div>
+
+    <div class="proj">
+      <div class="ph"><span class="t">中国电信“天翼网关”</span><span class="m">上海翼拍　2015.07 – 2016.08</span></div>
+      <p>承接中国电信“悦me”智能家居客户端 2.0 升级（后更名“天翼网关”），负责界面设计、交互流程组织，与产品、开发协同推进多轮迭代。重点优化“天翼网关绑定”“萤石摄像头绑定”等核心交互流程，并完善引导页设计；按电信研究院需求完成首页、图标、视觉与交互设计。产品上线后广泛应用于家庭宽带与智能家居网络服务场景，覆盖大量常规宽带用户。</p>
+    </div>
+
+    <div class="proj">
+      <div class="ph"><span class="t">富士通 EMIS 产品管理后台</span><span class="m">上海翼拍　2015.02 – 2016.01</span></div>
+      <p>与富士通联合开发产品管理后台：通过扫描各型号打印机机身二维码，实现产品全生命周期信息与售后内容追溯，帮助企业消费者进行高效产品沟通。负责界面设计、后台管理系统部分设计、图标设计及切图输出，为富士通产品信息管理体系的规范化打下基础。</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>教育背景与技能<span class="en">EDUCATION &amp; SKILLS</span></h2>
+    <div class="grid">
+      <div class="edu">
+        <h3>教育背景</h3>
+        <div class="sch">黑龙江大学</div>
+        <div class="major">本科 · 旅游管理</div>
+        <div class="date">2010.08 – 2014.07</div>
+        <div class="cert">证书：大学英语四级</div>
+      </div>
+      <div>
+        <h3>专业能力</h3>
+        <div class="skills">
+          Figma（精通）　Adobe XD（精通）　Photoshop（精通）<br>
+          Illustrator（熟练）　Web 前端（良好）　英语（精通）
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

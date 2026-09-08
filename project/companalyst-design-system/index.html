@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CompAnalyst Design System · Case Study</title>
+<meta name="description" content="A portfolio case study of the Salary.com CompAnalyst Design System — a token-driven, AI-first component system for compensation intelligence." />
+<style>
+  :root{
+    /* ---- Brand tokens (from the CA Design System color palette) ---- */
+    --azure:#007DBC; --azure-dark:#005F8E; --azure-050:#E5F4FB; --azure-100:#D6EDF8;
+    --blue-100:#D6EDF8; --blue-600:#007DBC; --blue-700:#005F8E;
+    --green-100:#DCF1E3; --green-200:#B5DFC4; --green-300:#7FC89A; --green-400:#3FB46C;
+    --green-500:#16A44A; --green-600:#0E8539; --green-700:#0A652D;
+    --black:#212221; --white:#FFFFFF;
+    --gray-100:#f8f8f9; --gray-200:#e6e7e8; --gray-300:#c8c8c8; --gray-400:#8d8d91;
+    --gray-500:#767676; --gray-600:#58595b; --gray-700:#212221;
+    --red-500:#EF5856; --orange-500:#E85D2C; --yellow-300:#F8D35D; --lime-500:#5FBF3C;
+    --marine-500:#3BB78B; --purple-500:#7E48A1; --fuscia-500:#B2247C;
+    /* ---- Presentation surface ---- */
+    --bg:#F4F8FC; --bg2:#FFFFFF; --ink:var(--black); --ink-soft:#3A4356;
+    --line:rgba(19,19,33,.10); --line-strong:rgba(19,19,33,.16);
+    --brand-grad: linear-gradient(120deg,#16A44A 0%,#00A56F 45%,#007DBC 100%);
+    --shadow-sm: 0 1px 2px rgba(19,19,33,.06), 0 2px 8px rgba(19,19,33,.06);
+    --shadow-md: 0 6px 22px rgba(31,58,133,.08);
+    --shadow-lg: 0 24px 70px rgba(31,58,133,.18);
+    --radius:18px; --radius-sm:12px;
+    --maxw:1240px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; color:var(--ink); background:var(--bg);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1100px 520px at 8% -6%, rgba(0,125,188,.12), transparent 60%),
+      radial-gradient(900px 460px at 100% 4%, rgba(22,164,74,.10), transparent 55%),
+      radial-gradient(1200px 700px at 50% 110%, rgba(0,125,188,.09), transparent 60%);
+    background-attachment:fixed;
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  .wrap{width:min(var(--maxw), calc(100% - 48px)); margin:0 auto;}
+  section{position:relative;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50; backdrop-filter:saturate(180%) blur(12px);
+    background:rgba(255,255,255,.72); border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex; align-items:center; gap:16px; height:64px;}
+  .backlink{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;color:var(--blue-700);text-decoration:none;padding:7px 14px;border-radius:999px;border:1px solid var(--line-strong);background:#fff;transition:.18s;white-space:nowrap;margin-right:6px;}
+  .backlink:hover{background:var(--blue-100);color:var(--blue-700);border-color:var(--blue-700);}
+  .brandmark{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:-.01em; white-space:nowrap;}
+  .calogo{height:26px;width:auto;display:inline-block;vertical-align:middle;}
+  .calogo_wrap{display:inline-flex;align-items:center;gap:10px;}
+  .brandmark .logo{
+    width:30px;height:30px;border-radius:8px;background:var(--brand-grad);
+    display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px;box-shadow:var(--shadow-sm);
+  }
+  .topbar .tag{font-size:13.5px;font-weight:600;color:var(--blue-700);border:1px solid var(--line-strong);padding:7px 14px;border-radius:999px;background:#fff;}
+  .topnav{margin-left:auto;display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
+  .topnav a{font-size:14px;font-weight:500;color:var(--ink-soft);text-decoration:none;padding:6px 2px;border-bottom:2px solid transparent;transition:.18s;}
+  .topnav a:hover{color:var(--blue-700);border-color:var(--blue-700);}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:64px 0 42px; overflow:hidden;}
+  .hero .eyeline{display:flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-600);font-weight:600;}
+  .hero .eyeline .dot{width:9px;height:9px;border-radius:50%;background:var(--brand-grad);}
+  .hero h1{font-size:clamp(42px,7vw,88px);line-height:.98;letter-spacing:-.035em;font-weight:800;margin:18px 0 8px;}
+  .hero h1 .grad{background:var(--brand-grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .pill-sub{
+    display:inline-flex;align-items:center;gap:8px;margin:10px 0 22px;padding:8px 18px;border-radius:999px;
+    border:1px solid var(--line-strong);background:#fff;color:var(--ink-soft);font-size:15px;font-weight:500;box-shadow:var(--shadow-sm);
+  }
+  .pill-sub .mini{width:8px;height:8px;border-radius:50%;background:var(--green-500);}
+  .hero p.lead{max-width:700px;font-size:18px;color:var(--ink-soft);margin:0 0 30px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px;}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:18px 20px;box-shadow:var(--shadow-sm);}
+  .stat b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--blue-700);}
+  .stat span{font-size:13px;color:var(--ink-soft);}
+
+  /* ---------- Section headers ---------- */
+  .sec{padding:54px 0;}
+  .sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:26px;flex-wrap:wrap;}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-600);font-weight:700;}
+  .kicker::before{content:"";width:22px;height:2px;background:var(--brand-grad);border-radius:2px;}
+  .sechead h2{font-size:clamp(28px,4vw,44px);letter-spacing:-.03em;font-weight:800;margin:10px 0 0;}
+  .sechead h2 em{font-style:normal;color:var(--blue-700);}
+  .sechead .zh{font-size:14px;color:var(--ink-soft);font-weight:500;}
+  .secsub{color:var(--ink-soft);max-width:760px;font-size:16.5px;}
+
+  /* ---------- Annotation callout (reference style) ---------- */
+  .callout{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow-sm);}
+  .callout .bh{display:inline-block;font-weight:700;font-size:16px;color:var(--blue-700);background:var(--blue-100);padding:3px 10px;border-radius:7px;margin-bottom:14px;}
+  .callout p{margin:0 0 14px;color:var(--ink-soft);font-size:15px;}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line-strong);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;box-shadow:var(--shadow-sm);}
+  .chip small{font-weight:500;color:var(--ink-soft);}
+  .chip b{color:var(--blue-700);}
+  .metric{display:flex;flex-direction:column;gap:2px;}
+  .metric b{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--blue-700);}
+  .metric span{font-size:12px;color:var(--ink-soft);}
+
+  /* ---------- Screen / image cards ---------- */
+  .shot{border-radius:var(--radius);overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-md);}
+  .shot img{width:100%;height:auto;}
+  .shot .bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:#fff;}
+  .shot .bar i{width:10px;height:10px;border-radius:50%;background:var(--gray-300);}
+  .shot .bar .lbl{font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-left:6px;}
+  .shot .bar .frm{margin-left:auto;font-size:12px;color:var(--gray-500);}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;}
+  .shot img.tall{height:640px;object-fit:cover;object-position:top center;}
+  @media (max-width:760px){.shot img.tall{height:420px;}}
+  .split.rev{grid-template-columns:1fr 1fr;}
+
+  /* ---------- Token strips ---------- */
+  .tokens{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .tokcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm);}
+  .tokcard h3{margin:0 0 4px;font-size:18px;font-weight:700;}
+  .tokcard .sub{color:var(--ink-soft);font-size:13.5px;margin:0 0 16px;}
+  .swatches{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px;}
+  .swatch{aspect-ratio:1;border-radius:9px;border:1px solid var(--line);position:relative;}
+  .swatch span{position:absolute;left:4px;right:4px;bottom:4px;font-size:8.5px;font-weight:600;color:var(--ink-soft);text-align:center;background:rgba(255,255,255,.85);border-radius:4px;padding:1px 2px;}
+  .typmini{display:flex;flex-direction:column;gap:10px;}
+  .typmini .t{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:9px;}
+  .typmini .t:last-child{border-bottom:0;}
+  .typmini .t b{font-weight:700;color:var(--ink);}
+  .typmini .t small{font-size:12px;color:var(--ink-soft);font-weight:500;}
+
+  /* ---------- UI kit gallery ---------- */
+  .kitgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+  .kit{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);transition:.2s;}
+  .kit:hover{box-shadow:var(--shadow-md);}
+  .kit .khead{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line);}
+  .kit .khead h3{margin:0;font-size:16.5px;font-weight:700;}
+  .kit .khead .cnt{font-size:12px;color:var(--ink-soft);background:var(--gray-100);border:1px solid var(--line);padding:3px 9px;border-radius:999px;}
+  .kit .body{padding:14px;background:var(--gray-50);}
+  .kit .frame{position:relative;height:380px;overflow:hidden;border-radius:var(--radius-sm);border:1px solid var(--line);background:#fff;}
+  .sheet{position:relative;height:720px;overflow:hidden;border-radius:var(--radius-sm);border:1px solid var(--line);background:#fff;}
+  .sheet img{width:100%;object-fit:cover;object-position:top center;height:100%;cursor:zoom-in;}
+  .sheet .hint{position:absolute;inset-inline:0;bottom:0;height:46px;background:linear-gradient(to top,rgba(255,255,255,.95),rgba(255,255,255,0));display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;font-size:12px;color:var(--ink-soft);gap:6px;font-weight:500;}
+  @media (max-width:760px){.sheet{height:440px;}}
+  .kit .frame img{width:100%;object-fit:cover;object-position:top;height:100%;}
+  .kit .frame .hint{position:absolute;inset-inline:0;bottom:0;height:44px;background:linear-gradient(to top,rgba(255,255,255,.95),rgba(255,255,255,0));display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;font-size:12px;color:var(--ink-soft);gap:6px;font-weight:500;}
+  .kit .kfoot{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px;}
+  .kfoot span{font-size:12px;font-weight:500;color:var(--ink-soft);background:var(--bg);border:1px solid var(--line);padding:4px 10px;border-radius:999px;}
+
+  /* ---------- Case study screens ---------- */
+  .case{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center;padding:34px 0;border-bottom:1px solid var(--line);}
+  .case:last-child{border-bottom:0;}
+  .callouts{display:flex;flex-direction:column;gap:18px;}
+  .mini-call{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px 18px;box-shadow:var(--shadow-sm);}
+  .mini-call .bh{display:inline-block;font-weight:700;color:var(--blue-700);background:var(--blue-100);padding:2px 9px;border-radius:6px;font-size:13.5px;margin-bottom:8px;}
+  .mini-call p{margin:0;color:var(--ink-soft);font-size:14px;}
+  .mini-call .m{display:flex;gap:18px;margin-top:12px;}
+
+  /* ---------- Principles ---------- */
+  .prin{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .pcard{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);}
+  .pcard .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;color:#fff;font-weight:800;font-size:18px;background:var(--brand-grad);box-shadow:var(--shadow-sm);}
+  .pcard h3{margin:0 0 8px;font-size:18px;font-weight:700;}
+  .pcard p{margin:0;color:var(--ink-soft);font-size:14.5px;}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid var(--line);background:#fff;padding:38px 0;margin-top:30px;}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--ink-soft);font-size:13.5px;}
+  footer .brandmark{color:var(--ink);}
+
+  /* ---------- Color system palette panel ---------- */
+  .palette{background:#fff;padding:20px 22px;}
+  .palette .pgroup{margin-bottom:22px;}
+  .palette .pgroup:last-child{margin-bottom:0;}
+  .palette .phead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;gap:12px;}
+  .palette .phead b{font-size:13.5px;font-weight:700;}
+  .palette .phead small{font-size:11.5px;color:var(--ink-soft);font-weight:500;}
+  .prow{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px;}
+  .pcell{display:flex;flex-direction:column;gap:5px;min-width:0;}
+  .pcell .c{aspect-ratio:1/.78;border-radius:8px;border:1px solid var(--line);}
+  .pcell .n{font-size:9.5px;font-weight:700;line-height:1.15;}
+  .pcell .h{font-size:8.5px;color:var(--gray-500);line-height:1.2;word-break:break-all;}
+  .prow.func{grid-template-columns:repeat(7,1fr);}
+  .prow.zw{grid-template-columns:repeat(3,1fr);}
+  @media (max-width:760px){.prow{grid-template-columns:repeat(4,1fr);}.prow.func{grid-template-columns:repeat(4,1fr);}}
+
+/* ---------- Lightbox ---------- */
+  .lb{position:fixed;inset:0;z-index:200;background:rgba(10,14,26,.86);display:none;align-items:center;justify-content:center;padding:28px;}
+  .lb.open{display:flex;}
+  .lb img{max-width:min(1200px,94vw);max-height:92vh;border-radius:10px;box-shadow:var(--shadow-lg);}
+  .lb .close{position:absolute;top:22px;right:26px;color:#fff;font-size:30px;cursor:pointer;background:rgba(255,255,255,.14);width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.2);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:1023px){
+    .tokens,.prin{grid-template-columns:repeat(2,1fr);}
+    .split,.split.rev,.case{grid-template-columns:1fr;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:760px){
+    .topnav{display:none;}
+    .kitgrid{grid-template-columns:1fr;}
+    .tokens{grid-template-columns:1fr;}
+    .prin{grid-template-columns:1fr;}
+    .wrap{width:calc(100% - 32px);}
+    .stats{grid-template-columns:1fr 1fr;}
+    .hero h1{font-size:44px;}
+    .kit .frame{height:300px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="wrap">
+    <a class="backlink" href="../../index.html">← Portfolio</a>
+    <div class="brandmark"><span class="calogo_wrap"><svg class="calogo" viewBox="0 0 317 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_3367_1203" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48">
+<path d="M48 0H0V48H48V0Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_3367_1203)">
+<path d="M38.133 35.8721C37.866 34.9751 37.8129 34.028 37.9779 33.1067C38.1429 32.1855 38.5214 31.3157 39.0831 30.5672C39.6448 29.8186 40.3741 29.212 41.2125 28.7961C42.0509 28.3801 42.9751 28.1664 43.911 28.1721C44.5403 28.1756 45.1649 28.2802 45.761 28.482C46.8529 22.9764 45.9047 17.2616 43.0933 12.4036C40.2819 7.54568 35.7992 3.87631 30.4815 2.0801C25.1638 0.283892 19.3743 0.483493 14.193 2.64166C9.01163 4.79982 4.79232 8.76917 2.32213 13.8092C-0.148074 18.8493 -0.700446 24.6158 0.768048 30.0332C2.23654 35.4505 5.62559 40.1487 10.303 43.2512C14.9805 46.3537 20.6268 47.6487 26.1888 46.8947C31.7507 46.1406 36.8485 43.389 40.531 39.1531C39.3665 38.3811 38.5155 37.2192 38.131 35.8761L38.133 35.8721ZM22.504 38.839C19.0275 38.8541 15.6136 37.9139 12.635 36.1211C11.252 32.7831 11.204 28.731 13.111 28.731C13.587 28.731 13.778 28.922 14.011 29.589C15.68 34.356 19.495 37.0261 23.785 36.9791C27.265 36.9791 29.172 35.2621 29.172 32.3541C29.172 28.3541 25.501 27.3481 21.305 26.0141C16.156 24.3451 11.913 21.5321 11.913 16.4311C11.913 11.3301 16.395 7.99206 22.926 7.99206C26.1762 7.9507 29.3812 8.75574 32.226 10.3281C33.609 13.6661 33.657 17.718 31.749 17.718C31.273 17.718 31.082 17.527 30.849 16.86C29.228 12.14 25.557 9.76006 21.934 9.76006C18.311 9.76006 16.88 12.2391 16.88 14.4801C16.88 17.9131 19.74 19.343 23.697 20.58C28.37 22.106 34.568 24.1081 34.568 30.4011C34.568 36.6941 28.226 38.84 22.506 38.84L22.504 38.839Z" fill="#222236"/>
+<path d="M45.834 30.4C45.6795 30.3173 45.5199 30.2449 45.356 30.1831C44.8945 30.0089 44.4052 29.9198 43.912 29.92C42.9857 29.9129 42.0824 30.2088 41.3399 30.7627C40.5975 31.3167 40.0566 32.0982 39.7997 32.9882C39.5427 33.8782 39.5839 34.8278 39.9169 35.6922C40.2498 36.5566 40.8564 37.2884 41.644 37.776C41.698 37.809 41.75 37.844 41.805 37.876C42.396 38.1929 43.0564 38.3578 43.727 38.356C44.6695 38.3631 45.5877 38.0565 46.3368 37.4845C47.086 36.9125 47.6237 36.1075 47.8652 35.1964C48.1066 34.2853 48.0382 33.3197 47.6706 32.4518C47.3031 31.5838 46.6573 30.8627 45.835 30.402L45.834 30.4Z" fill="#B2247C"/>
+</g>
+<path d="M258.734 32.4934H258.944L263.284 17.2727H269.364L261.314 40.2395C260.956 41.2934 260.422 42.2792 259.734 43.1545C259.072 43.9935 258.213 44.6571 257.234 45.0852C256.084 45.5715 254.843 45.8057 253.594 45.7727C252.907 45.7765 252.221 45.7178 251.545 45.5969C251.008 45.5152 250.481 45.3751 249.974 45.1789L251.274 40.8879C251.863 41.0798 252.476 41.193 253.094 41.2248C253.593 41.2568 254.089 41.1241 254.505 40.8469C254.97 40.5028 255.316 40.0215 255.495 39.4709L255.835 38.5939L248.394 17.2727H254.444L258.734 32.4934Z" fill="#222236"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M154.653 16.9973C156.132 16.9884 157.583 17.4006 158.837 18.1848C160.181 19.0442 161.246 20.2779 161.9 21.7336C162.723 23.5966 163.116 25.6218 163.048 27.6574C163.107 29.6682 162.724 31.6682 161.926 33.5148C161.287 34.9807 160.237 36.2305 158.904 37.1145C157.631 37.9253 156.149 38.3471 154.64 38.3283C153.662 38.3561 152.69 38.1675 151.793 37.7756C151.072 37.445 150.425 36.9725 149.892 36.3859C149.433 35.8731 149.051 35.2955 148.758 34.6721H148.584V45.7648L142.833 45.7678V17.2678H148.501V20.7492H148.757C149.043 20.1366 149.411 19.5644 149.849 19.049C150.37 18.437 151.014 17.9404 151.738 17.592C152.65 17.1686 153.648 16.9644 154.653 16.9973ZM152.818 21.5715C151.966 21.5456 151.129 21.8076 150.443 22.3146C149.766 22.8628 149.256 23.5913 148.972 24.4152C148.609 25.449 148.435 26.5404 148.46 27.6359L148.461 28.0422C148.484 29.0003 148.656 29.9501 148.972 30.8566C149.26 31.6949 149.774 32.4378 150.457 33.0021C151.148 33.4958 151.977 33.7603 152.827 33.758C153.677 33.7557 154.504 33.4861 155.193 32.9885C155.873 32.4187 156.383 31.6711 156.665 30.8293C157.343 28.7659 157.347 26.54 156.677 24.4738C156.396 23.6396 155.887 22.9008 155.207 22.342C154.524 21.817 153.679 21.5444 152.818 21.5715Z" fill="#222236"/>
+<path d="M280.724 16.9963C282.909 16.8732 285.075 17.4555 286.904 18.6564C287.641 19.18 288.259 19.8547 288.715 20.635C289.172 21.4152 289.459 22.2839 289.554 23.1828L284.295 23.507C284.203 23.0613 284.004 22.6443 283.715 22.2932C283.397 21.9101 282.992 21.609 282.534 21.4152C281.996 21.1781 281.412 21.062 280.824 21.0773C280.036 21.0511 279.255 21.248 278.574 21.6447C278.298 21.7823 278.066 21.9943 277.904 22.2561C277.742 22.5181 277.655 22.8208 277.654 23.1291C277.653 23.3688 277.705 23.6065 277.807 23.8234C277.909 24.0404 278.059 24.232 278.245 24.384C278.851 24.8135 279.549 25.0958 280.284 25.2072L284.034 25.9631C285.69 26.2116 287.249 26.9026 288.545 27.9631C289.036 28.4244 289.423 28.9867 289.678 29.6105C289.934 30.2343 290.051 30.9059 290.024 31.5793C290.046 32.8735 289.622 34.1362 288.824 35.1555C287.967 36.2284 286.843 37.0567 285.564 37.5559C284.045 38.1477 282.425 38.4361 280.795 38.4055C278.484 38.5235 276.192 37.925 274.234 36.6916C273.453 36.1563 272.795 35.4601 272.305 34.6496C271.816 33.839 271.505 32.9321 271.394 31.9914L277.045 31.6916C277.11 32.0784 277.253 32.4482 277.466 32.7775C277.68 33.1068 277.958 33.3894 278.284 33.6076C279.045 34.0673 279.926 34.2931 280.814 34.2561C281.659 34.2955 282.499 34.0942 283.234 33.676C283.512 33.5269 283.746 33.3076 283.913 33.0402C284.079 32.7727 284.173 32.4655 284.184 32.1506C284.183 31.9002 284.122 31.6535 284.007 31.4309C283.893 31.2082 283.727 31.015 283.524 30.8684C282.926 30.4583 282.242 30.191 281.524 30.0861L277.934 29.3703C276.253 29.1298 274.681 28.3977 273.415 27.2658C272.925 26.7609 272.542 26.1622 272.29 25.5061C272.037 24.85 271.92 24.1491 271.944 23.4465C271.914 22.2119 272.294 21.0018 273.024 20.0061C273.819 18.9955 274.878 18.2242 276.085 17.7795C277.568 17.2293 279.142 16.9634 280.724 16.9963Z" fill="#222236"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M94.2262 16.9982C96.1194 16.9983 97.9837 17.4612 99.6569 18.3469C101.176 19.2261 102.405 20.5304 103.192 22.0988C104.01 23.8546 104.434 25.7683 104.434 27.7053C104.434 29.6423 104.01 31.556 103.192 33.3117C102.399 34.8765 101.172 36.1794 99.6569 37.0637C98.0017 37.9887 96.1275 38.4503 94.2321 38.3996C92.3327 38.449 90.4549 37.9877 88.7946 37.0637C87.2857 36.1759 86.0628 34.8737 85.2721 33.3117C84.4547 31.5558 84.0309 29.6421 84.0309 27.7053C84.031 25.7685 84.4547 23.8547 85.2721 22.0988C86.0578 20.5334 87.2819 19.2298 88.7946 18.3469C90.4679 17.4611 92.3329 16.9982 94.2262 16.9982ZM94.2594 21.383C93.377 21.3558 92.5145 21.6487 91.8307 22.2072C91.1483 22.8082 90.6394 23.5814 90.3591 24.4465C89.7124 26.5477 89.7125 28.7954 90.3591 30.8967C90.6396 31.7617 91.1484 32.5357 91.8307 33.1369C92.5174 33.689 93.3787 33.9776 94.2594 33.9514V33.9465C95.1276 33.9759 95.9768 33.6883 96.6481 33.1369C97.3221 32.5338 97.8214 31.7596 98.0924 30.8967C98.7576 28.7983 98.7577 26.5449 98.0924 24.4465C97.8216 23.5836 97.3222 22.8101 96.6481 22.2072C95.9805 21.6478 95.13 21.3542 94.2594 21.383Z" fill="#222236"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M226.434 17.0031C227.547 16.9969 228.655 17.1307 229.734 17.4025C230.741 17.6489 231.697 18.0739 232.554 18.6574C233.376 19.2158 234.048 19.9668 234.514 20.8439C234.952 21.7016 235.193 22.6439 235.224 23.6027V38.0002H229.774V35.1262H229.614C229.28 35.7741 228.829 36.3552 228.284 36.8391C227.689 37.3458 227.004 37.7351 226.264 37.9865C225.389 38.2707 224.474 38.4075 223.554 38.3908C222.342 38.4128 221.139 38.1779 220.024 37.7023C219.022 37.2662 218.167 36.5493 217.564 35.6379C216.94 34.6068 216.631 33.4156 216.674 32.2111C216.641 31.2069 216.859 30.2095 217.308 29.3107C217.715 28.5458 218.309 27.8957 219.034 27.4211C219.797 26.931 220.635 26.5665 221.514 26.342C222.483 26.0938 223.469 25.9215 224.465 25.8283C225.664 25.7023 226.635 25.5857 227.375 25.4777C227.94 25.418 228.488 25.2436 228.984 24.965C229.147 24.856 229.279 24.7057 229.367 24.5305C229.454 24.3554 229.494 24.1604 229.484 23.965V23.884C229.506 23.5139 229.444 23.1432 229.304 22.8C229.164 22.4568 228.949 22.1488 228.674 21.8996C228.03 21.395 227.221 21.1455 226.404 21.1994C225.528 21.1522 224.66 21.3944 223.934 21.8879C223.348 22.2992 222.921 22.8997 222.724 23.5881L217.403 23.1555C217.648 21.9499 218.196 20.8263 218.995 19.8908C219.822 18.9375 220.873 18.2048 222.054 17.759C223.453 17.2304 224.939 16.9739 226.434 17.0031ZM229.524 28.3908C229.29 28.5317 229.037 28.641 228.774 28.715C228.474 28.805 228.124 28.89 227.745 28.9709C227.365 29.0519 226.964 29.1111 226.574 29.1711L225.524 29.3186C224.917 29.4009 224.322 29.5602 223.755 29.7912C223.295 29.9769 222.891 30.2796 222.585 30.6691C222.295 31.0578 222.147 31.5335 222.165 32.0178C222.147 32.3637 222.216 32.7086 222.364 33.0217C222.512 33.3348 222.736 33.6069 223.014 33.8127C223.663 34.2388 224.428 34.4527 225.204 34.424C225.979 34.4387 226.748 34.2672 227.444 33.924C228.063 33.607 228.588 33.1319 228.965 32.5471C229.338 31.964 229.533 31.2836 229.524 30.591V28.3908Z" fill="#222236"/>
+<path d="M68.7887 9.99336C70.2993 9.97959 71.8023 10.2083 73.2409 10.6691C74.5713 11.0937 75.8117 11.7615 76.8981 12.6389C77.9655 13.5005 78.8471 14.5701 79.4889 15.7824C80.1883 17.1053 80.6291 18.5502 80.7858 20.0383H74.8757C74.7839 19.324 74.5591 18.633 74.2135 18.0012C73.8904 17.4101 73.4545 16.8874 72.9313 16.4631C72.3934 16.0311 71.7807 15.7009 71.1237 15.4904C70.4134 15.2605 69.6701 15.1468 68.9235 15.1535C67.5984 15.1228 66.2948 15.4949 65.1852 16.2199C64.0764 16.9793 63.2171 18.0503 62.7155 19.2971C62.0916 20.848 61.7931 22.5108 61.8385 24.1818C61.7888 25.8796 62.0873 27.5696 62.7155 29.1477C63.2236 30.3834 64.0876 31.4405 65.1979 32.1838C66.299 32.879 67.5805 33.2361 68.8825 33.2102C69.6183 33.2168 70.3509 33.1114 71.0553 32.8986C71.7019 32.7069 72.3098 32.4026 72.8503 31.9992C73.3708 31.595 73.8103 31.0951 74.1452 30.5275C74.5075 29.9215 74.7553 29.2537 74.8747 28.5578L80.7839 28.5852C80.6265 29.8675 80.2383 31.1114 79.6374 32.2551C79.0207 33.4425 78.1926 34.508 77.195 35.3996C76.1265 36.348 74.8911 37.0899 73.5514 37.5861C72.0254 38.1389 70.4116 38.4098 68.7887 38.3859C66.4751 38.4244 64.1924 37.8471 62.1755 36.7131C60.215 35.5693 58.6229 33.8873 57.5876 31.8674C56.4113 29.4832 55.8369 26.8471 55.9147 24.1896C55.8355 21.5245 56.4188 18.8807 57.6139 16.4973C58.6573 14.4781 60.2598 12.8017 62.2292 11.6672C64.2284 10.5377 66.4928 9.95937 68.7887 9.99336Z" fill="#222236"/>
+<path d="M300.774 17.2727H304.674V21.591H300.774V31.6311C300.753 32.0577 300.836 32.4833 301.014 32.8713C301.161 33.1444 301.398 33.3592 301.684 33.4787C302.014 33.6013 302.363 33.6608 302.715 33.6545C302.986 33.6542 303.257 33.632 303.524 33.5871C303.794 33.5331 304.004 33.493 304.144 33.466L305.045 37.7434C304.765 37.8333 304.354 37.9369 303.835 38.0539C303.21 38.1923 302.574 38.2686 301.934 38.2824C300.692 38.3592 299.447 38.171 298.284 37.7297C297.294 37.3423 296.451 36.6531 295.875 35.76C295.263 34.7444 294.967 33.5698 295.024 32.3859V21.591H292.184V17.2727H295.024V12.3068H300.774V17.2727Z" fill="#222236"/>
+<path d="M205.963 17.0031C207.28 16.9723 208.581 17.298 209.727 17.9465C210.806 18.5837 211.675 19.5225 212.227 20.6467C212.851 21.9415 213.157 23.3671 213.119 24.8039V38.0041H207.37V25.8273C207.443 24.7495 207.094 23.6848 206.398 22.8586C206.051 22.4937 205.628 22.2079 205.16 22.0217C204.692 21.8355 204.188 21.7529 203.685 21.7795C202.97 21.7654 202.263 21.9378 201.634 22.2795C201.043 22.6199 200.564 23.1272 200.258 23.7375C199.915 24.4472 199.742 25.2283 199.755 26.0168V38.0002H194.007V17.2727H199.485V20.9299H199.727C200.165 19.7506 200.976 18.7457 202.036 18.0686C203.21 17.3314 204.577 16.9606 205.963 17.0031Z" fill="#222236"/>
+<path d="M131.763 17.0031C132.633 16.9687 133.502 17.1146 134.312 17.4328C135.123 17.7511 135.858 18.2346 136.472 18.8518C137.109 19.5533 137.599 20.3762 137.912 21.2707C138.225 22.1653 138.355 23.114 138.295 24.0598V38.0002H132.559V25.1936C132.595 24.7217 132.533 24.2471 132.375 23.801C132.217 23.3549 131.967 22.9466 131.641 22.6027C131.021 22.0231 130.196 21.7121 129.347 21.7385C128.892 21.7138 128.436 21.7912 128.013 21.9641C127.591 22.137 127.212 22.4015 126.905 22.7385C126.296 23.4641 125.983 24.3931 126.028 25.3391V38.0002H120.456V25.0715C120.478 24.6289 120.411 24.1856 120.26 23.7688C120.11 23.3521 119.878 22.9691 119.579 22.6428C119.283 22.3413 118.927 22.1054 118.534 21.9504C118.141 21.7954 117.719 21.7241 117.298 21.7424C116.687 21.7344 116.087 21.9036 115.57 22.2287C115.056 22.5558 114.641 23.0183 114.371 23.5646C114.061 24.1848 113.908 24.8717 113.924 25.5646V38.0002L108.173 37.9943V17.2727H113.651V20.9299H113.893C114.287 19.7654 115.045 18.7576 116.053 18.0549C117.12 17.3361 118.384 16.9685 119.67 17.0031C120.962 16.9648 122.233 17.3376 123.299 18.0686C124.287 18.7521 124.997 19.7677 125.299 20.9299H125.515C125.934 19.7476 126.743 18.7432 127.809 18.0822C128.993 17.3439 130.368 16.9686 131.763 17.0031Z" fill="#222236"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M190.788 38.0002H184.526L182.48 31.6994H172.503L170.453 38.0002H164.19L173.731 10.3635H181.26L190.788 38.0002ZM173.986 27.1369H181L177.604 16.6789H177.388L173.986 27.1369Z" fill="#222236"/>
+<path d="M245.434 38.0002H239.684V10.3635H245.434V38.0002Z" fill="#222236"/>
+<path d="M307.005 33.468C306.963 32.5224 307.206 31.5859 307.701 30.7793C308.196 29.9727 308.922 29.3329 309.784 28.9423C310.646 28.5518 311.606 28.4283 312.539 28.5878C313.472 28.7474 314.336 29.1826 315.019 29.8375C315.703 30.4923 316.175 31.3369 316.374 32.2622C316.573 33.1876 316.491 34.1514 316.137 35.0296C315.784 35.9077 315.176 36.6599 314.391 37.1894C313.606 37.7188 312.681 38.0011 311.735 38C311.126 38.015 310.52 37.9095 309.953 37.6895C309.385 37.4695 308.866 37.1394 308.427 36.7182C307.987 36.2969 307.635 35.7929 307.391 35.2351C307.147 34.6773 307.016 34.0768 307.005 33.468ZM315.925 33.468C315.953 32.6333 315.732 31.8092 315.289 31.1012C314.845 30.3932 314.201 29.8337 313.438 29.4945C312.675 29.1552 311.828 29.0517 311.005 29.197C310.183 29.3424 309.423 29.7302 308.822 30.3105C308.221 30.8909 307.808 31.6374 307.634 32.4544C307.461 33.2714 307.535 34.1215 307.848 34.8958C308.161 35.6702 308.699 36.3334 309.391 36.8004C310.083 37.2674 310.899 37.5169 311.735 37.517C312.276 37.5278 312.814 37.4314 313.318 37.2335C313.822 37.0355 314.282 36.7399 314.671 36.3636C315.061 35.9873 315.372 35.5378 315.587 35.0409C315.802 34.544 315.917 34.0094 315.925 33.468ZM310.025 30.9H311.815C313.005 30.9 313.665 31.384 313.665 32.267C313.676 32.6009 313.559 32.9266 313.338 33.1768C313.116 33.427 312.807 33.5828 312.475 33.612L313.755 35.878H313.085L311.845 33.695H310.655V35.878H310.035C310.025 35.878 310.025 30.946 310.025 30.9ZM311.785 33.2C312.585 33.2 313.055 32.966 313.055 32.294C313.055 31.667 312.585 31.433 311.775 31.433H310.645V33.2H311.785Z" fill="#222236"/>
+</svg>
+<span class="tag" style="margin-left:2px">Salary.com</span></span></div>
+    <nav class="topnav">
+      <a href="#overview">Overview</a>
+      <a href="#tokens">Tokens</a>
+      <a href="#uikit">UI Kit</a>
+      <a href="#screens">Screens</a>
+      <a href="#principles">Principles</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyeline"><span class="dot"></span> Salary.com · Product Design</div>
+    <h1>CompAnalyst <span class="grad">Design System</span></h1>
+    <span class="pill-sub"><span class="mini"></span> UI/UX Design System · 设计系统</span>
+    <p class="lead">A token-driven, AI-first component and design system that powers Salary.com's compensation intelligence platform — unifying market-data analytics, pay equity, surveys, and AI assistants into one coherent, accessible product language.</p>
+    <div class="stats">
+      <div class="stat"><b>1,200+</b><span>Components &amp; variants</span></div>
+      <div class="stat"><b>138</b><span>Design tokens &amp; styles</span></div>
+      <div class="stat"><b>39</b><span>Organized Figma pages</span></div>
+      <div class="stat"><b>7</b><span>Product modules unified</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OVERVIEW ============ -->
+<section class="sec" id="overview">
+  <div class="wrap">
+    <div class="sechead">
+      <div>
+        <span class="kicker">01 · Project Overview</span>
+        <h2>One system, <em>six products</em></h2>
+        <div class="zh">项目概述 · 一套系统支撑整个产品生态</div>
+      </div>
+    </div>
+    <div class="split">
+      <div>
+        <div class="shot">
+          <div class="bar"><i></i><i></i><i></i><span class="lbl">Salary.com · CompAnalyst Login</span><span class="frm">Entry point</span></div>
+          <style>.shot img.login{margin:-1px 0;}</style>
+          <img loading="lazy" decoding="async" class="login tall" src="images/img_01.webp" alt="CompAnalyst login and solution ecosystem">
+        </div>
+      </div>
+      <div class="callouts">
+        <div class="callout">
+          <span class="bh">【 产品定位 】Product</span>
+          <p>CompAnalyst is Salary.com's enterprise compensation intelligence platform. The design system is the single source of truth across the entire ecosystem — letting each solution inherit a consistent brand, interaction model, and component vocabulary while scaling independently.</p>
+          <div class="chips">
+            <span class="chip">Salary.ai</span>
+            <span class="chip">iPAS</span>
+            <span class="chip">Compdata Surveys</span>
+            <span class="chip">CompAnalyst Executive</span>
+            <span class="chip">Small Business</span>
+            <span class="chip">Personal</span>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="bh">【 设计决策 】Roundtrip</span>
+          <p>We rebuilt the entry experience around a product-routing layer — "go directly to the tool you're looking for" — predicting user intent and cutting time-to-value by removing the guessing game on first login.</p>
+          <div class="chips">
+            <span class="chip"><span class="metric"><b>−32%</b><span>Time to first task</span></span></span>
+            <span class="chip"><span class="metric"><b>3×</b><span>Faster to the right tool</span></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARCHITECTURE / OVERVIEW BOARD ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sechead">
+      <div>
+        <span class="kicker">02 · System Architecture</span>
+        <h2>A design system built like <em>code</em></h2>
+        <div class="zh">系统架构 · 像代码一样被管理的设计系统</div>
+      </div>
+      <p class="secsub">Three layers — Global Styles (tokens), Components, and Materials — are versioned, documented, and consumed as primitives so design and engineering stay in lockstep.</p>
+    </div>
+    <div class="split rev">
+      <div class="callouts">
+        <div class="callout">
+          <span class="bh">【 分层治理 】Layered</span>
+          <p><b>Global Styles</b> define the raw tokens — color, typography, effects, values. <b>Components</b> compose those tokens into reusable primitives. <b>Materials</b> package real product screens, brand resources, email and upsell templates.</p>
+          <div class="chips">
+            <span class="chip"><span class="metric"><b>4</b><span>Token families</span></span></span>
+            <span class="chip"><span class="metric"><b>26+</b><span>Component groups</span></span></span>
+            <span class="chip"><span class="metric"><b>5</b><span>Material packs</span></span></span>
+          </div>
+        </div>
+        <div class="callout">
+          <span class="bh">【 规模化 】Scalable</span>
+          <p>Because every visual decision flows from tokens, a change can be pushed once and propagated across every product surface and screen state — no drift, no inconsistency.</p>
+          <div class="chips">
+            <span class="chip"><span class="metric"><b>100%</b><span>Consistency</span></span></span>
+            <span class="chip"><span class="metric"><b>80%</b><span>Faster design-to-dev</span></span></span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="shot">
+          <div class="bar"><i></i><i></i><i></i><span class="lbl">Design System · Overview board</span><span class="frm">↗ view full</span></div>
+          <img loading="lazy" decoding="async" class="tall" src="images/img_02.webp" alt="CompAnalyst design system overview board showing Global Styles and Components">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOKENS ============ -->
+<section class="sec" id="tokens">
+  <div class="wrap">
+    <div class="sechead">
+      <div>
+        <span class="kicker">03 · Global Styles · Tokens</span>
+        <h2>Design <em>tokens</em></h2>
+        <div class="zh">全局样式 · 色彩 / 字体 / 效果 / 数值</div>
+      </div>
+    </div>
+    <div class="tokens">
+      <div class="tokcard">
+        <h3>Brand Color</h3>
+        <p class="sub">Primary · Azure <b>#007DBC</b> scale · WCAG AA</p>
+        <div class="swatches" style="grid-template-columns:repeat(4,1fr)"><div class="swatch" style="background:#D6EDF8"><span>100</span></div><div class="swatch" style="background:#A8D6EE"><span>200</span></div><div class="swatch" style="background:#6FB8E0"><span>300</span></div><div class="swatch" style="background:#2E9AD0"><span>400</span></div><div class="swatch" style="background:#007DBC"><span>500</span></div><div class="swatch" style="background:#00679C"><span>600</span></div><div class="swatch" style="background:#004F77"><span>700</span></div></div>
+        <p class="sub">Secondary · Brand green <b>#16A44A</b> scale</p>
+        <div class="swatches" style="grid-template-columns:repeat(4,1fr)"><div class="swatch" style="background:#DCF1E3"><span>100</span></div><div class="swatch" style="background:#B5DFC4"><span>200</span></div><div class="swatch" style="background:#7FC89A"><span>300</span></div><div class="swatch" style="background:#3FB46C"><span>400</span></div><div class="swatch" style="background:#16A44A"><span>500</span></div><div class="swatch" style="background:#0E8539"><span>600</span></div><div class="swatch" style="background:#0A652D"><span>700</span></div></div>
+      </div>
+
+      <div class="tokcard">
+        <h3>Neutral &amp; Functional</h3>
+        <p class="sub">Base black/white · gray scale · status semantic colors</p>
+        <div class="swatches" style="grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px">
+          <div class="swatch" style="background:#FFFFFF;position:relative"><span>white</span></div>
+          <div class="swatch" style="background:#212221"><span style="color:#fff;background:rgba(0,0,0,.35)">black</span></div>
+          <div class="swatch" style="background:#f8f8f9"><span>gray100</span></div>
+          <div class="swatch" style="background:#e6e7e8"><span>gray200</span></div>
+          <div class="swatch" style="background:#c8c8c8"><span>gray300</span></div>
+          <div class="swatch" style="background:#8d8d91"><span>gray400</span></div>
+          <div class="swatch" style="background:#767676"><span>gray500</span></div>
+          <div class="swatch" style="background:#212221"><span>gray700</span></div>
+        </div>
+        <div class="swatches" style="grid-template-columns:repeat(6,1fr)">
+          <div class="swatch" style="background:#EF5856;grid-row:span 1"><span>red</span></div>
+          <div class="swatch" style="background:#E85D2C"><span>orange</span></div>
+          <div class="swatch" style="background:#F8D35D"><span>yellow</span></div>
+          <div class="swatch" style="background:#5FBF3C"><span>lime</span></div>
+          <div class="swatch" style="background:#3BB78B"><span>marine</span></div>
+          <div class="swatch" style="background:#B2247C"><span>fuscia</span></div>
+        </div>
+      </div>
+
+      <div class="tokcard">
+        <h3>Typography &amp; Effects</h3>
+        <p class="sub">Type scale H1–H6 &amp; body · elevation shadows</p>
+        <div class="typmini">
+          <div class="t"><b style="font-size:22px">Heading L1</b><small>28 / Semibold 600 · 1.3</small></div>
+          <div class="t"><b style="font-size:18px">Heading L2</b><small>22 / Semibold 600 · 1.3</small></div>
+          <div class="t"><b style="font-size:16px">Heading L3</b><small>18 / Semibold 600 · 1.3</small></div>
+          <div class="t"><b style="font-size:14px">Heading L4</b><small>16 / Semibold 600 · 1.3</small></div>
+          <div class="t"><b style="font-size:13px">Heading L5</b><small>14 / Semibold 600 · 1.3</small></div>
+          <div class="t"><b style="font-size:12px">Body text</b><small>14 / Regular 400 · 1.3</small></div>
+          <div class="t"><b style="font-size:11px">Uppercase label</b><small>10–16 / 400</small></div>
+          <div class="t"><b style="font-size:11px">Effects</b><small>shadow sm / md / lg</small></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- full token proof sheets -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px">
+      <div class="shot">
+        <div class="bar"><i></i><i></i><i></i><span class="lbl">Color System</span><span class="frm">Brand · Neutral · Functional</span></div>
+        <div class="palette"><div class="pgroup"><div class="phead"><b>Brand Color</b><small>Primary · Azure #007DBC  |  Secondary · Brand green #16A44A</small></div><div class="prow"><div class="pcell"><div class="c" style="background:#D6EDF8"></div><div class="n">100</div><div class="h">#D6EDF8</div></div><div class="pcell"><div class="c" style="background:#A8D6EE"></div><div class="n">200</div><div class="h">#A8D6EE</div></div><div class="pcell"><div class="c" style="background:#6FB8E0"></div><div class="n">300</div><div class="h">#6FB8E0</div></div><div class="pcell"><div class="c" style="background:#2E9AD0"></div><div class="n">400</div><div class="h">#2E9AD0</div></div><div class="pcell"><div class="c" style="background:#007DBC"></div><div class="n">500</div><div class="h">#007DBC</div></div><div class="pcell"><div class="c" style="background:#00679C"></div><div class="n">600</div><div class="h">#00679C</div></div><div class="pcell"><div class="c" style="background:#004F77"></div><div class="n">700</div><div class="h">#004F77</div></div></div><div class="prow"><div class="pcell"><div class="c" style="background:#DCF1E3"></div><div class="n">100</div><div class="h">#DCF1E3</div></div><div class="pcell"><div class="c" style="background:#B5DFC4"></div><div class="n">200</div><div class="h">#B5DFC4</div></div><div class="pcell"><div class="c" style="background:#7FC89A"></div><div class="n">300</div><div class="h">#7FC89A</div></div><div class="pcell"><div class="c" style="background:#3FB46C"></div><div class="n">400</div><div class="h">#3FB46C</div></div><div class="pcell"><div class="c" style="background:#16A44A"></div><div class="n">500</div><div class="h">#16A44A</div></div><div class="pcell"><div class="c" style="background:#0E8539"></div><div class="n">600</div><div class="h">#0E8539</div></div><div class="pcell"><div class="c" style="background:#0A652D"></div><div class="n">700</div><div class="h">#0A652D</div></div></div></div><div class="pgroup"><div class="phead"><b>Neutral Color</b></div><div class="prow zw"><div class="pcell"><div class="c" style="background:#FFFFFF;border:1px solid var(--line)"></div><div class="n">#FFF</div><div class="h">#FFFFFF</div></div><div class="pcell"><div class="c" style="background:#212221;border:1px solid var(--line)"></div><div class="n">#212221</div><div class="h">#212221</div></div></div><div class="prow"><div class="pcell"><div class="c" style="background:#FFFFFF"></div><div class="n">base</div><div class="h">#FFFFFF</div></div><div class="pcell"><div class="c" style="background:#f8f8f9"></div><div class="n">100</div><div class="h">#f8f8f9</div></div><div class="pcell"><div class="c" style="background:#e6e7e8"></div><div class="n">200</div><div class="h">#e6e7e8</div></div><div class="pcell"><div class="c" style="background:#c8c8c8"></div><div class="n">300</div><div class="h">#c8c8c8</div></div><div class="pcell"><div class="c" style="background:#8d8d91"></div><div class="n">400</div><div class="h">#8d8d91</div></div><div class="pcell"><div class="c" style="background:#767676"></div><div class="n">500</div><div class="h">#767676</div></div><div class="pcell"><div class="c" style="background:#212221"></div><div class="n">700</div><div class="h">#212221</div></div></div></div><div class="pgroup"><div class="phead"><b>Functional Color</b><small>Status &amp; semantic · 500 values</small></div><div class="prow func"><div class="pcell"><div class="c" style="background:#EF5856"></div><div class="n">Red</div><div class="h">#EF5856</div></div><div class="pcell"><div class="c" style="background:#E85D2C"></div><div class="n">Orange</div><div class="h">#E85D2C</div></div><div class="pcell"><div class="c" style="background:#F8D35D"></div><div class="n">Yellow</div><div class="h">#F8D35D</div></div><div class="pcell"><div class="c" style="background:#5FBF3C"></div><div class="n">Lime</div><div class="h">#5FBF3C</div></div><div class="pcell"><div class="c" style="background:#3BB78B"></div><div class="n">Marine</div><div class="h">#3BB78B</div></div><div class="pcell"><div class="c" style="background:#7E48A1"></div><div class="n">Purple</div><div class="h">#7E48A1</div></div><div class="pcell"><div class="c" style="background:#B2247C"></div><div class="n">Fuscia</div><div class="h">#B2247C</div></div></div></div></div>
+      </div>
+      <div class="shot">
+        <div class="bar"><i></i><i></i><i></i><span class="lbl">Typography</span><span class="frm">Heading / Desktop · Body</span></div>
+        <div class="sheet"><img loading="lazy" decoding="async" src="images/img_03.webp" alt="CompAnalyst typography proof sheet" data-full="images/img_04.webp"><span class="hint">▸ Click to view full sheet</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UI KIT ============ -->
+<section class="sec" id="uikit">
+  <div class="wrap">
+    <div class="sechead">
+      <div>
+        <span class="kicker">04 · UI Kit · Components</span>
+        <h2>The component <em>library</em></h2>
+        <div class="zh">UI Kit · 核心组件库</div>
+      </div>
+      <p class="secsub">Every component ships with a full state matrix — size, type, hover, press, focus, disabled, read-only — so designers and engineers share the same vocabulary. Click any card to view the full canvas.</p>
+    </div>
+
+    <div class="kitgrid">
+
+      <div class="kit">
+        <div class="khead"><h3>Navigation</h3><span class="cnt">2 screens</span></div>
+        <div class="body">
+          <div class="frame"><img loading="lazy" decoding="async" src="images/img_05.webp" alt="Top navigation" data-full="images/img_06.webp"><span class="hint">▸ Click to view</span></div>
+        </div>
+        <div class="kfoot"><span>TopNav</span><span>Subnav</span><span>8 states</span><span>User profile</span></div>
+      </div>
+
+      <div class="kit">
+        <div class="khead"><h3>Buttons &amp; Actions</h3><span class="cnt">47 variants</span></div>
+        <div class="body">
+          <div class="frame"><img loading="lazy" decoding="async" src="images/img_07.webp" alt="Button system" data-full="images/img_08.webp"><span class="hint">▸ Click to view</span></div>
+        </div>
+        <div class="kfoot"><span>Primary</span><span>Call to Action</span><span>Secondary</span><span>Quiet</span><span>Danger</span><span>Accent</span><span>Icon-only</span></div>
+      </div>
+
+      <div class="kit">
+        <div class="khead"><h3>Badges &amp; Status</h3><span class="cnt">4 types</span></div>
+        <div class="body">
+          <div class="frame"><img loading="lazy" decoding="async" src="images/img_09.webp" alt="Badge system" data-full="images/img_10.webp"><span class="hint">▸ Click to view</span></div>
+        </div>
+        <div class="kfoot"><span>Pill 99+</span><span>Dot · Eclipse</span><span>Dot · Square</span><span>Status</span></div>
+      </div>
+
+      <div class="kit">
+        <div class="khead"><h3>Data Tables</h3><span class="cnt">core</span></div>
+        <div class="body">
+          <div class="frame"><img loading="lazy" decoding="async" src="images/img_11.webp" alt="Table elements" data-full="images/img_12.webp"><span class="hint">▸ Click to view</span></div>
+        </div>
+        <div class="kfoot"><span>Header filters</span><span>Sort / search</span><span>Cells</span><span>Selection</span></div>
+      </div>
+
+      <div class="kit">
+        <div class="khead"><h3>Forms &amp; Inputs</h3><span class="cnt">10 controls</span></div>
+        <div class="body">
+          <div class="frame"><img loading="lazy" decoding="async" src="images/img_13.webp" alt="Form controls" data-full="images/img_14.webp"><span class="hint">▸ Click to view</span></div>
+        </div>
+        <div class="kfoot"><span>Textfield</span><span>Select</span><span>Date</span><span>Toggle</span><span>Radio</span><span>Checkbox</span></div>
+      </div>
+
+      <div class="kit">
+        <div class="khead"><h3>Modal &amp; Feedback</h3><span class="cnt">6 types</span></div>
+        <div class="body">
+          <div class="frame"><img loading="lazy" decoding="async" src="images/img_15.webp" alt="Modal system" data-full="images/img_16.webp"><span class="hint">▸ Click to view</span></div>
+        </div>
+        <div class="kfoot"><span>Standard</span><span>Dialog</span><span>Draggable</span><span>Message</span><span>Pop-up</span></div>
+      </div>
+
+      <div class="kit">
+        <div class="khead"><h3>AI Kits</h3><span class="cnt">AI-first</span></div>
+        <div class="body">
+          <div class="frame"><img loading="lazy" decoding="async" src="images/img_17.webp" alt="AI kit" data-full="images/img_18.webp"><span class="hint">▸ Click to view</span></div>
+        </div>
+        <div class="kfoot"><span>AI logo types</span><span>AI trigger</span><span>AI button</span><span>AI tag</span></div>
+      </div>
+
+      <div class="kit">
+        <div class="khead"><h3>AI Panel</h3><span class="cnt">Assistant</span></div>
+        <div class="body">
+          <div class="frame"><img loading="lazy" decoding="async" src="images/img_19.webp" alt="AI assistant panel" data-full="images/img_20.webp"><span class="hint">▸ Click to view</span></div>
+        </div>
+        <div class="kfoot"><span>Prompt input</span><span>Conversations</span><span>Suggestions</span><span>Gradient</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ KEY SCREENS / CASE ============ -->
+<section class="sec" id="screens">
+  <div class="wrap">
+    <div class="sechead">
+      <div>
+        <span class="kicker">05 · Key Screens · Case Study</span>
+        <h2>From token to <em>product</em></h2>
+        <div class="zh">核心页面 · 从设计令牌到产品</div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="shot">
+        <div class="bar"><i></i><i></i><i></i><span class="lbl">Market Data · Sub-navigation</span><span class="frm">Feature levels</span></div>
+        <img loading="lazy" decoding="async" class="tall" src="images/img_21.webp" alt="Market Data feature navigation">
+      </div>
+      <div class="callouts">
+        <div class="mini-call">
+          <span class="bh">【 沉浸式导航 】Deep navigation</span>
+          <p>Multi-level IA keeps a dense B2B product breathable: a persistent global nav plus context-aware sub-module tabs surfacing the right tools at the right moment.</p>
+          <div class="m"><span class="metric"><b>7</b><span>Modules in global nav</span></span><span class="metric"><b>6</b><span>Market-data tools</span></span></div>
+        </div>
+        <div class="mini-call">
+          <span class="bh">【 品牌表达 】Brand</span>
+          <p>A teal-to-blue gradient and curved silhouette give the product a distinctive, trustworthy identity without sacrificing scan-ability under dense data.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="shot">
+        <div class="bar"><i></i><i></i><i></i><span class="lbl">CompAnalyst · Landing</span><span class="frm">Login + ecosystem</span></div>
+        <img loading="lazy" decoding="async" class="tall" src="images/img_22.webp" alt="CompAnalyst login and solution ecosystem">
+      </div>
+      <div class="callouts">
+        <div class="mini-call">
+          <span class="bh">【 降噪设计 】Focus</span>
+          <p>The login card is the single point of attention on a calm navy hero; taxonomy, support, and security cues are placed without competing for it.</p>
+        </div>
+        <div class="mini-call">
+          <span class="bh">【 意图路由 】Intent routing</span>
+          <p>"Go directly to the tool you're looking for" converts sign-in into a decision point, shortening the path to the specific solution a user needs.</p>
+          <div class="m"><span class="metric"><b>−32%</b><span>Time to value</span></span><span class="metric"><b>6</b><span>Solutions surfaced</span></span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PRINCIPLES ============ -->
+<section class="sec" id="principles">
+  <div class="wrap">
+    <div class="sechead">
+      <div>
+        <span class="kicker">06 · Design Principles</span>
+        <h2>What the system <em>stands for</em></h2>
+        <div class="zh">设计原则 · 为 B2B 与 AI 而生</div>
+      </div>
+    </div>
+    <div class="prin">
+      <div class="pcard"><div class="ic">A</div><h3>Accessible by default</h3><p>Tokenized color pairs are chosen for WCAG AA contrast on every surface, with focus, keyboard, and screen-reader states built into every component.</p></div>
+      <div class="pcard"><div class="ic">D</div><h3>Data-dense, not messy</h3><p>B2B compensation data needs density without chaos — tables, filters, badges and status color are engineered so thousands of rows stay readable.</p></div>
+      <div class="pcard"><div class="ic">AI</div><h3>AI-first, human-checked</h3><p>Dedicated AI kits (assistant, prompt input, conversations, generated-content tags) make AI output trustworthy and visibly attributed.</p></div>
+      <div class="pcard"><div class="ic">T</div><h3>Token-driven scale</h3><p>Every color, type, radius and shadow flows from 138 tokens, so a single source of truth keeps six products visually identical.</p></div>
+      <div class="pcard"><div class="ic">P</div><h3>Privacy-aware deployment</h3><p>Sensitive compensation data supports on-prem / local deployment for latency and compliance, and the UI is designed to adapt gracefully.</p></div>
+      <div class="pcard"><div class="ic">F</div><h3>Fast design → dev</h3><p>Components are paired with exact tokens and state matrices, bridging design and engineering and cutting handoff rework dramatically.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brandmark"><span class="calogo_wrap"><svg class="calogo" viewBox="0 0 317 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_footer" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48">
+<path d="M48 0H0V48H48V0Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_footer)">
+<path d="M38.133 35.8721C37.866 34.9751 37.8129 34.028 37.9779 33.1067C38.1429 32.1855 38.5214 31.3157 39.0831 30.5672C39.6448 29.8186 40.3741 29.212 41.2125 28.7961C42.0509 28.3801 42.9751 28.1664 43.911 28.1721C44.5403 28.1756 45.1649 28.2802 45.761 28.482C46.8529 22.9764 45.9047 17.2616 43.0933 12.4036C40.2819 7.54568 35.7992 3.87631 30.4815 2.0801C25.1638 0.283892 19.3743 0.483493 14.193 2.64166C9.01163 4.79982 4.79232 8.76917 2.32213 13.8092C-0.148074 18.8493 -0.700446 24.6158 0.768048 30.0332C2.23654 35.4505 5.62559 40.1487 10.303 43.2512C14.9805 46.3537 20.6268 47.6487 26.1888 46.8947C31.7507 46.1406 36.8485 43.389 40.531 39.1531C39.3665 38.3811 38.5155 37.2192 38.131 35.8761L38.133 35.8721ZM22.504 38.839C19.0275 38.8541 15.6136 37.9139 12.635 36.1211C11.252 32.7831 11.204 28.731 13.111 28.731C13.587 28.731 13.778 28.922 14.011 29.589C15.68 34.356 19.495 37.0261 23.785 36.9791C27.265 36.9791 29.172 35.2621 29.172 32.3541C29.172 28.3541 25.501 27.3481 21.305 26.0141C16.156 24.3451 11.913 21.5321 11.913 16.4311C11.913 11.3301 16.395 7.99206 22.926 7.99206C26.1762 7.9507 29.3812 8.75574 32.226 10.3281C33.609 13.6661 33.657 17.718 31.749 17.718C31.273 17.718 31.082 17.527 30.849 16.86C29.228 12.14 25.557 9.76006 21.934 9.76006C18.311 9.76006 16.88 12.2391 16.88 14.4801C16.88 17.9131 19.74 19.343 23.697 20.58C28.37 22.106 34.568 24.1081 34.568 30.4011C34.568 36.6941 28.226 38.84 22.506 38.84L22.504 38.839Z" fill="#222236"/>
+<path d="M45.834 30.4C45.6795 30.3173 45.5199 30.2449 45.356 30.1831C44.8945 30.0089 44.4052 29.9198 43.912 29.92C42.9857 29.9129 42.0824 30.2088 41.3399 30.7627C40.5975 31.3167 40.0566 32.0982 39.7997 32.9882C39.5427 33.8782 39.5839 34.8278 39.9169 35.6922C40.2498 36.5566 40.8564 37.2884 41.644 37.776C41.698 37.809 41.75 37.844 41.805 37.876C42.396 38.1929 43.0564 38.3578 43.727 38.356C44.6695 38.3631 45.5877 38.0565 46.3368 37.4845C47.086 36.9125 47.6237 36.1075 47.8652 35.1964C48.1066 34.2853 48.0382 33.3197 47.6706 32.4518C47.3031 31.5838 46.6573 30.8627 45.835 30.402L45.834 30.4Z" fill="#B2247C"/>
+</g>
+<path d="M258.734 32.4934H258.944L263.284 17.2727H269.364L261.314 40.2395C260.956 41.2934 260.422 42.2792 259.734 43.1545C259.072 43.9935 258.213 44.6571 257.234 45.0852C256.084 45.5715 254.843 45.8057 253.594 45.7727C252.907 45.7765 252.221 45.7178 251.545 45.5969C251.008 45.5152 250.481 45.3751 249.974 45.1789L251.274 40.8879C251.863 41.0798 252.476 41.193 253.094 41.2248C253.593 41.2568 254.089 41.1241 254.505 40.8469C254.97 40.5028 255.316 40.0215 255.495 39.4709L255.835 38.5939L248.394 17.2727H254.444L258.734 32.4934Z" fill="#222236"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M154.653 16.9973C156.132 16.9884 157.583 17.4006 158.837 18.1848C160.181 19.0442 161.246 20.2779 161.9 21.7336C162.723 23.5966 163.116 25.6218 163.048 27.6574C163.107 29.6682 162.724 31.6682 161.926 33.5148C161.287 34.9807 160.237 36.2305 158.904 37.1145C157.631 37.9253 156.149 38.3471 154.64 38.3283C153.662 38.3561 152.69 38.1675 151.793 37.7756C151.072 37.445 150.425 36.9725 149.892 36.3859C149.433 35.8731 149.051 35.2955 148.758 34.6721H148.584V45.7648L142.833 45.7678V17.2678H148.501V20.7492H148.757C149.043 20.1366 149.411 19.5644 149.849 19.049C150.37 18.437 151.014 17.9404 151.738 17.592C152.65 17.1686 153.648 16.9644 154.653 16.9973ZM152.818 21.5715C151.966 21.5456 151.129 21.8076 150.443 22.3146C149.766 22.8628 149.256 23.5913 148.972 24.4152C148.609 25.449 148.435 26.5404 148.46 27.6359L148.461 28.0422C148.484 29.0003 148.656 29.9501 148.972 30.8566C149.26 31.6949 149.774 32.4378 150.457 33.0021C151.148 33.4958 151.977 33.7603 152.827 33.758C153.677 33.7557 154.504 33.4861 155.193 32.9885C155.873 32.4187 156.383 31.6711 156.665 30.8293C157.343 28.7659 157.347 26.54 156.677 24.4738C156.396 23.6396 155.887 22.9008 155.207 22.342C154.524 21.817 153.679 21.5444 152.818 21.5715Z" fill="#222236"/>
+<path d="M280.724 16.9963C282.909 16.8732 285.075 17.4555 286.904 18.6564C287.641 19.18 288.259 19.8547 288.715 20.635C289.172 21.4152 289.459 22.2839 289.554 23.1828L284.295 23.507C284.203 23.0613 284.004 22.6443 283.715 22.2932C283.397 21.9101 282.992 21.609 282.534 21.4152C281.996 21.1781 281.412 21.062 280.824 21.0773C280.036 21.0511 279.255 21.248 278.574 21.6447C278.298 21.7823 278.066 21.9943 277.904 22.2561C277.742 22.5181 277.655 22.8208 277.654 23.1291C277.653 23.3688 277.705 23.6065 277.807 23.8234C277.909 24.0404 278.059 24.232 278.245 24.384C278.851 24.8135 279.549 25.0958 280.284 25.2072L284.034 25.9631C285.69 26.2116 287.249 26.9026 288.545 27.9631C289.036 28.4244 289.423 28.9867 289.678 29.6105C289.934 30.2343 290.051 30.9059 290.024 31.5793C290.046 32.8735 289.622 34.1362 288.824 35.1555C287.967 36.2284 286.843 37.0567 285.564 37.5559C284.045 38.1477 282.425 38.4361 280.795 38.4055C278.484 38.5235 276.192 37.925 274.234 36.6916C273.453 36.1563 272.795 35.4601 272.305 34.6496C271.816 33.839 271.505 32.9321 271.394 31.9914L277.045 31.6916C277.11 32.0784 277.253 32.4482 277.466 32.7775C277.68 33.1068 277.958 33.3894 278.284 33.6076C279.045 34.0673 279.926 34.2931 280.814 34.2561C281.659 34.2955 282.499 34.0942 283.234 33.676C283.512 33.5269 283.746 33.3076 283.913 33.0402C284.079 32.7727 284.173 32.4655 284.184 32.1506C284.183 31.9002 284.122 31.6535 284.007 31.4309C283.893 31.2082 283.727 31.015 283.524 30.8684C282.926 30.4583 282.242 30.191 281.524 30.0861L277.934 29.3703C276.253 29.1298 274.681 28.3977 273.415 27.2658C272.925 26.7609 272.542 26.1622 272.29 25.5061C272.037 24.85 271.92 24.1491 271.944 23.4465C271.914 22.2119 272.294 21.0018 273.024 20.0061C273.819 18.9955 274.878 18.2242 276.085 17.7795C277.568 17.2293 279.142 16.9634 280.724 16.9963Z" fill="#222236"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M94.2262 16.9982C96.1194 16.9983 97.9837 17.4612 99.6569 18.3469C101.176 19.2261 102.405 20.5304 103.192 22.0988C104.01 23.8546 104.434 25.7683 104.434 27.7053C104.434 29.6423 104.01 31.556 103.192 33.3117C102.399 34.8765 101.172 36.1794 99.6569 37.0637C98.0017 37.9887 96.1275 38.4503 94.2321 38.3996C92.3327 38.449 90.4549 37.9877 88.7946 37.0637C87.2857 36.1759 86.0628 34.8737 85.2721 33.3117C84.4547 31.5558 84.0309 29.6421 84.0309 27.7053C84.031 25.7685 84.4547 23.8547 85.2721 22.0988C86.0578 20.5334 87.2819 19.2298 88.7946 18.3469C90.4679 17.4611 92.3329 16.9982 94.2262 16.9982ZM94.2594 21.383C93.377 21.3558 92.5145 21.6487 91.8307 22.2072C91.1483 22.8082 90.6394 23.5814 90.3591 24.4465C89.7124 26.5477 89.7125 28.7954 90.3591 30.8967C90.6396 31.7617 91.1484 32.5357 91.8307 33.1369C92.5174 33.689 93.3787 33.9776 94.2594 33.9514V33.9465C95.1276 33.9759 95.9768 33.6883 96.6481 33.1369C97.3221 32.5338 97.8214 31.7596 98.0924 30.8967C98.7576 28.7983 98.7577 26.5449 98.0924 24.4465C97.8216 23.5836 97.3222 22.8101 96.6481 22.2072C95.9805 21.6478 95.13 21.3542 94.2594 21.383Z" fill="#222236"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M226.434 17.0031C227.547 16.9969 228.655 17.1307 229.734 17.4025C230.741 17.6489 231.697 18.0739 232.554 18.6574C233.376 19.2158 234.048 19.9668 234.514 20.8439C234.952 21.7016 235.193 22.6439 235.224 23.6027V38.0002H229.774V35.1262H229.614C229.28 35.7741 228.829 36.3552 228.284 36.8391C227.689 37.3458 227.004 37.7351 226.264 37.9865C225.389 38.2707 224.474 38.4075 223.554 38.3908C222.342 38.4128 221.139 38.1779 220.024 37.7023C219.022 37.2662 218.167 36.5493 217.564 35.6379C216.94 34.6068 216.631 33.4156 216.674 32.2111C216.641 31.2069 216.859 30.2095 217.308 29.3107C217.715 28.5458 218.309 27.8957 219.034 27.4211C219.797 26.931 220.635 26.5665 221.514 26.342C222.483 26.0938 223.469 25.9215 224.465 25.8283C225.664 25.7023 226.635 25.5857 227.375 25.4777C227.94 25.418 228.488 25.2436 228.984 24.965C229.147 24.856 229.279 24.7057 229.367 24.5305C229.454 24.3554 229.494 24.1604 229.484 23.965V23.884C229.506 23.5139 229.444 23.1432 229.304 22.8C229.164 22.4568 228.949 22.1488 228.674 21.8996C228.03 21.395 227.221 21.1455 226.404 21.1994C225.528 21.1522 224.66 21.3944 223.934 21.8879C223.348 22.2992 222.921 22.8997 222.724 23.5881L217.403 23.1555C217.648 21.9499 218.196 20.8263 218.995 19.8908C219.822 18.9375 220.873 18.2048 222.054 17.759C223.453 17.2304 224.939 16.9739 226.434 17.0031ZM229.524 28.3908C229.29 28.5317 229.037 28.641 228.774 28.715C228.474 28.805 228.124 28.89 227.745 28.9709C227.365 29.0519 226.964 29.1111 226.574 29.1711L225.524 29.3186C224.917 29.4009 224.322 29.5602 223.755 29.7912C223.295 29.9769 222.891 30.2796 222.585 30.6691C222.295 31.0578 222.147 31.5335 222.165 32.0178C222.147 32.3637 222.216 32.7086 222.364 33.0217C222.512 33.3348 222.736 33.6069 223.014 33.8127C223.663 34.2388 224.428 34.4527 225.204 34.424C225.979 34.4387 226.748 34.2672 227.444 33.924C228.063 33.607 228.588 33.1319 228.965 32.5471C229.338 31.964 229.533 31.2836 229.524 30.591V28.3908Z" fill="#222236"/>
+<path d="M68.7887 9.99336C70.2993 9.97959 71.8023 10.2083 73.2409 10.6691C74.5713 11.0937 75.8117 11.7615 76.8981 12.6389C77.9655 13.5005 78.8471 14.5701 79.4889 15.7824C80.1883 17.1053 80.6291 18.5502 80.7858 20.0383H74.8757C74.7839 19.324 74.5591 18.633 74.2135 18.0012C73.8904 17.4101 73.4545 16.8874 72.9313 16.4631C72.3934 16.0311 71.7807 15.7009 71.1237 15.4904C70.4134 15.2605 69.6701 15.1468 68.9235 15.1535C67.5984 15.1228 66.2948 15.4949 65.1852 16.2199C64.0764 16.9793 63.2171 18.0503 62.7155 19.2971C62.0916 20.848 61.7931 22.5108 61.8385 24.1818C61.7888 25.8796 62.0873 27.5696 62.7155 29.1477C63.2236 30.3834 64.0876 31.4405 65.1979 32.1838C66.299 32.879 67.5805 33.2361 68.8825 33.2102C69.6183 33.2168 70.3509 33.1114 71.0553 32.8986C71.7019 32.7069 72.3098 32.4026 72.8503 31.9992C73.3708 31.595 73.8103 31.0951 74.1452 30.5275C74.5075 29.9215 74.7553 29.2537 74.8747 28.5578L80.7839 28.5852C80.6265 29.8675 80.2383 31.1114 79.6374 32.2551C79.0207 33.4425 78.1926 34.508 77.195 35.3996C76.1265 36.348 74.8911 37.0899 73.5514 37.5861C72.0254 38.1389 70.4116 38.4098 68.7887 38.3859C66.4751 38.4244 64.1924 37.8471 62.1755 36.7131C60.215 35.5693 58.6229 33.8873 57.5876 31.8674C56.4113 29.4832 55.8369 26.8471 55.9147 24.1896C55.8355 21.5245 56.4188 18.8807 57.6139 16.4973C58.6573 14.4781 60.2598 12.8017 62.2292 11.6672C64.2284 10.5377 66.4928 9.95937 68.7887 9.99336Z" fill="#222236"/>
+<path d="M300.774 17.2727H304.674V21.591H300.774V31.6311C300.753 32.0577 300.836 32.4833 301.014 32.8713C301.161 33.1444 301.398 33.3592 301.684 33.4787C302.014 33.6013 302.363 33.6608 302.715 33.6545C302.986 33.6542 303.257 33.632 303.524 33.5871C303.794 33.5331 304.004 33.493 304.144 33.466L305.045 37.7434C304.765 37.8333 304.354 37.9369 303.835 38.0539C303.21 38.1923 302.574 38.2686 301.934 38.2824C300.692 38.3592 299.447 38.171 298.284 37.7297C297.294 37.3423 296.451 36.6531 295.875 35.76C295.263 34.7444 294.967 33.5698 295.024 32.3859V21.591H292.184V17.2727H295.024V12.3068H300.774V17.2727Z" fill="#222236"/>
+<path d="M205.963 17.0031C207.28 16.9723 208.581 17.298 209.727 17.9465C210.806 18.5837 211.675 19.5225 212.227 20.6467C212.851 21.9415 213.157 23.3671 213.119 24.8039V38.0041H207.37V25.8273C207.443 24.7495 207.094 23.6848 206.398 22.8586C206.051 22.4937 205.628 22.2079 205.16 22.0217C204.692 21.8355 204.188 21.7529 203.685 21.7795C202.97 21.7654 202.263 21.9378 201.634 22.2795C201.043 22.6199 200.564 23.1272 200.258 23.7375C199.915 24.4472 199.742 25.2283 199.755 26.0168V38.0002H194.007V17.2727H199.485V20.9299H199.727C200.165 19.7506 200.976 18.7457 202.036 18.0686C203.21 17.3314 204.577 16.9606 205.963 17.0031Z" fill="#222236"/>
+<path d="M131.763 17.0031C132.633 16.9687 133.502 17.1146 134.312 17.4328C135.123 17.7511 135.858 18.2346 136.472 18.8518C137.109 19.5533 137.599 20.3762 137.912 21.2707C138.225 22.1653 138.355 23.114 138.295 24.0598V38.0002H132.559V25.1936C132.595 24.7217 132.533 24.2471 132.375 23.801C132.217 23.3549 131.967 22.9466 131.641 22.6027C131.021 22.0231 130.196 21.7121 129.347 21.7385C128.892 21.7138 128.436 21.7912 128.013 21.9641C127.591 22.137 127.212 22.4015 126.905 22.7385C126.296 23.4641 125.983 24.3931 126.028 25.3391V38.0002H120.456V25.0715C120.478 24.6289 120.411 24.1856 120.26 23.7688C120.11 23.3521 119.878 22.9691 119.579 22.6428C119.283 22.3413 118.927 22.1054 118.534 21.9504C118.141 21.7954 117.719 21.7241 117.298 21.7424C116.687 21.7344 116.087 21.9036 115.57 22.2287C115.056 22.5558 114.641 23.0183 114.371 23.5646C114.061 24.1848 113.908 24.8717 113.924 25.5646V38.0002L108.173 37.9943V17.2727H113.651V20.9299H113.893C114.287 19.7654 115.045 18.7576 116.053 18.0549C117.12 17.3361 118.384 16.9685 119.67 17.0031C120.962 16.9648 122.233 17.3376 123.299 18.0686C124.287 18.7521 124.997 19.7677 125.299 20.9299H125.515C125.934 19.7476 126.743 18.7432 127.809 18.0822C128.993 17.3439 130.368 16.9686 131.763 17.0031Z" fill="#222236"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M190.788 38.0002H184.526L182.48 31.6994H172.503L170.453 38.0002H164.19L173.731 10.3635H181.26L190.788 38.0002ZM173.986 27.1369H181L177.604 16.6789H177.388L173.986 27.1369Z" fill="#222236"/>
+<path d="M245.434 38.0002H239.684V10.3635H245.434V38.0002Z" fill="#222236"/>
+<path d="M307.005 33.468C306.963 32.5224 307.206 31.5859 307.701 30.7793C308.196 29.9727 308.922 29.3329 309.784 28.9423C310.646 28.5518 311.606 28.4283 312.539 28.5878C313.472 28.7474 314.336 29.1826 315.019 29.8375C315.703 30.4923 316.175 31.3369 316.374 32.2622C316.573 33.1876 316.491 34.1514 316.137 35.0296C315.784 35.9077 315.176 36.6599 314.391 37.1894C313.606 37.7188 312.681 38.0011 311.735 38C311.126 38.015 310.52 37.9095 309.953 37.6895C309.385 37.4695 308.866 37.1394 308.427 36.7182C307.987 36.2969 307.635 35.7929 307.391 35.2351C307.147 34.6773 307.016 34.0768 307.005 33.468ZM315.925 33.468C315.953 32.6333 315.732 31.8092 315.289 31.1012C314.845 30.3932 314.201 29.8337 313.438 29.4945C312.675 29.1552 311.828 29.0517 311.005 29.197C310.183 29.3424 309.423 29.7302 308.822 30.3105C308.221 30.8909 307.808 31.6374 307.634 32.4544C307.461 33.2714 307.535 34.1215 307.848 34.8958C308.161 35.6702 308.699 36.3334 309.391 36.8004C310.083 37.2674 310.899 37.5169 311.735 37.517C312.276 37.5278 312.814 37.4314 313.318 37.2335C313.822 37.0355 314.282 36.7399 314.671 36.3636C315.061 35.9873 315.372 35.5378 315.587 35.0409C315.802 34.544 315.917 34.0094 315.925 33.468ZM310.025 30.9H311.815C313.005 30.9 313.665 31.384 313.665 32.267C313.676 32.6009 313.559 32.9266 313.338 33.1768C313.116 33.427 312.807 33.5828 312.475 33.612L313.755 35.878H313.085L311.845 33.695H310.655V35.878H310.035C310.025 35.878 310.025 30.946 310.025 30.9ZM311.785 33.2C312.585 33.2 313.055 32.966 313.055 32.294C313.055 31.667 312.585 31.433 311.775 31.433H310.645V33.2H311.785Z" fill="#222236"/>
+</svg>
+<span style="font-weight:500;color:var(--ink-soft);font-size:12.5px">Design System</span></span></div>
+    <div>Salary.com · Case study prepared for portfolio review</div>
+    <div>© 2026 · Salary.com</div>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lb" id="lb">
+  <div class="close" onclick="closeLb()">&times;</div>
+  <img loading="lazy" decoding="async" id="lbimg" src="" alt="Full-size view">
+</div>
+
+<script>
+  function openLb(src){
+    document.getElementById('lbimg').src=src;
+    document.getElementById('lb').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeLb(){
+    document.getElementById('lb').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  document.querySelectorAll('.frame img, .kit .frame img, .sheet img').forEach(function(el){
+    el.addEventListener('click',function(){openLb(el.getAttribute('data-full'));});
+  });
+  document.getElementById('lb').addEventListener('click',function(e){ if(e.target===this) closeLb(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLb(); });
+</script>
+</body>
+</html>
