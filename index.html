@@ -139,9 +139,18 @@
   .socials a:hover{background:var(--color-primary);color:#fff;}
   form.contact-form{background:#fff;border-radius:18px;padding:26px;box-shadow:var(--shadow);border:1px solid var(--color-line);}
   .contact-form label{display:block;font-size:13px;font-weight:600;color:var(--color-muted);margin:0 0 6px;}
-  .contact-form input,.contact-form textarea{width:100%;border:1px solid var(--color-line);border-radius:12px;padding:13px 15px;font-size:15px;font-family:inherit;margin-bottom:16px;background:var(--color-surface-2);transition:.2s;}
+  .contact-form input,.contact-form textarea{width:100%;border:1px solid var(--color-line);border-radius:12px;padding:13px 15px;font-size:16px;font-family:inherit;margin-bottom:16px;background:var(--color-surface-2);transition:.2s;}
+  .contact-form textarea{min-height:112px;resize:vertical;}
   .contact-form input:focus,.contact-form textarea:focus{outline:none;border-color:var(--color-primary);background:#fff;box-shadow:0 0 0 3px rgba(5,84,168,.12);}
   .contact-form button{border:0;cursor:pointer;width:100%;}
+  .contact-form button:disabled{cursor:wait;opacity:.68;transform:none;box-shadow:none;}
+  .form-status{min-height:22px;margin:0 0 14px;font-size:13.5px;color:var(--color-muted);}
+  .form-status[data-state="success"]{color:var(--green-500);}
+  .form-status[data-state="error"]{color:#B42318;}
+  .form-status[data-state="activation"]{color:#B54708;}
+  .form-note{margin:12px 0 0!important;font-size:12.5px!important;line-height:1.55;color:var(--color-muted)!important;}
+  .contact-email{margin-top:12px!important;}
+  .contact-email a{color:var(--color-primary);font-weight:600;border-bottom:1px solid var(--color-line);}
 
   /* ---- Mobile / tablet menu (hamburger) ---- */
   .menu-toggle{display:none;width:42px;height:42px;border-radius:12px;border:1px solid var(--color-line);background:rgba(255,255,255,.7);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;transition:.2s;margin-left:6px;}
@@ -312,19 +321,38 @@
       <div>
         <h2 data-i18n="contact.title">联系我</h2>
         <p data-i18n="contact.desc">如果你有设计系统、B2B 产品或 AI 产品的挑战，欢迎与我聊合作、机会与新想法。</p>
+        <p class="contact-email">Email: <a href="mailto:leiniao2086@hotmail.com">leiniao2086@hotmail.com</a></p>
         <div class="socials">
           <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
           <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M22 5.9c-.7.3-1.5.5-2.3.6.8-.5 1.4-1.3 1.7-2.2-.8.5-1.6.8-2.5 1a3.9 3.9 0 0 0-6.7 3.6A11 11 0 0 1 4.4 4.7a3.9 3.9 0 0 0 1.2 5.2c-.6 0-1.2-.2-1.7-.5v.1a3.9 3.9 0 0 0 3.1 3.8c-.6.2-1.2.2-1.8.1a3.9 3.9 0 0 0 3.6 2.7A7.9 7.9 0 0 1 2.6 18a11 11 0 0 0 6 1.8c7.2 0 11.1-6 11.1-11.1v-.5c.8-.6 1.4-1.3 2-2.1z"/></svg></a>
         </div>
       </div>
-      <form class="contact-form" action="#" onsubmit="return false;">
+      <form
+        id="contactForm"
+        name="contact"
+        class="contact-form"
+        action="https://formsubmit.co/leiniao2086@hotmail.com"
+        data-ajax-action="https://formsubmit.co/ajax/leiniao2086@hotmail.com"
+        method="POST"
+      >
+        <input type="hidden" name="_subject" value="Portfolio inquiry from weista.site" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_next" value="https://weista.site/#contact" />
+        <input type="hidden" name="_replyto" />
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+
         <label for="n" data-i18n="form.name">姓名</label>
-        <input id="n" type="text" data-ph="form.namePh" placeholder="你的姓名" />
+        <input id="n" name="name" type="text" required maxlength="80" autocomplete="name" data-ph="form.namePh" placeholder="你的姓名" />
+
         <label for="e" data-i18n="form.email">邮箱</label>
-        <input id="e" type="email" data-ph="form.emailPh" placeholder="you@example.com" />
+        <input id="e" name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" data-ph="form.emailPh" placeholder="you@example.com" />
+
         <label for="m" data-i18n="form.message">留言</label>
-        <textarea id="m" rows="4" data-ph="form.messagePh" placeholder="在这里输入你的留言"></textarea>
+        <textarea id="m" name="message" rows="4" required minlength="10" maxlength="2000" data-ph="form.messagePh" placeholder="在这里输入你的留言"></textarea>
+
+        <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
         <button class="btn primary" type="submit" data-i18n="form.submit">联系</button>
+        <p class="form-note" data-i18n="form.note">提交即表示你同意我仅使用这些信息回复本次咨询。</p>
       </form>
     </div>
   </div>
@@ -357,7 +385,7 @@
       "skills.desc":"从 UI 起步的 PS 时代逐步成长为以 Figma 作为主流工具的 UI/UX 设计师，并结合前端知识与原型工具，辅助团队推进项目落地。AI 时代，依旧不断学习，合理利用 Figma MCP / Harness Agent 等 AI 工具，结合不同能力的 AI 模型提升设计工作效率与质量。","s1":"Figma","s2":"设计 Token","s3":"SwiftUI","s4":"React / Tailwind","s5":"Vue","s6":"无障碍 (WCAG)","s7":"数据可视化","s8":"RAG 与 AI 原型","s9":"设计运营",
       "portfolio.eyebrow":"精选作品","portfolio.title":"作品","portfolio.desc":"一组代表性项目。在下方 PROJECTS 数组中追加即可持续收录新作品。",
       "contact.title":"联系我","contact.desc":"如果你有设计系统、B2B 产品或 AI 产品的挑战，欢迎与我聊合作、机会与新想法。",
-      "form.name":"姓名","form.namePh":"你的姓名","form.email":"邮箱","form.emailPh":"you@example.com","form.message":"留言","form.messagePh":"在这里输入你的留言","form.submit":"联系",
+      "form.name":"姓名","form.namePh":"你的姓名","form.email":"邮箱","form.emailPh":"you@example.com","form.message":"留言","form.messagePh":"在这里输入你的留言","form.submit":"发送留言","form.sending":"正在发送…","form.success":"留言已发送，我会尽快回复你。","form.error":"发送失败，请稍后重试，或直接发送邮件联系我。","form.activation":"表单正在等待邮箱激活，请直接发送邮件联系我。","form.note":"提交即表示你同意我仅使用这些信息回复本次咨询。",
       "footer":"© 2026 魏彤 · 由我设计与构建","footer.resume":"查看简历"
     },
     en: {
@@ -377,7 +405,7 @@
       "skills.desc":"I started in the Photoshop era of UI design and grew into a UI/UX designer whose primary tool is Figma — combining front-end knowledge with prototyping tools to help teams ship products. In the AI era, I keep learning and use AI tools like Figma MCP and Harness Agent with diverse AI models to improve design efficiency and quality.","s1":"Figma","s2":"Design Tokens","s3":"SwiftUI","s4":"React / Tailwind","s5":"Vue","s6":"Web Accessibility (WCAG)","s7":"Data Visualization","s8":"RAG & AI Prototyping","s9":"Design Ops",
       "portfolio.eyebrow":"Selected Work","portfolio.title":"Portfolio","portfolio.desc":"A collection of representative projects. Append to the PROJECTS array below to publish more.",
       "contact.title":"Contact me","contact.desc":"Have a design system, B2B product, or AI product challenge? Let's talk about collaboration, opportunities, and new ideas.",
-      "form.name":"Name","form.namePh":"Your name","form.email":"Email","form.emailPh":"you@example.com","form.message":"Message","form.messagePh":"Type your message here","form.submit":"Contact",
+      "form.name":"Name","form.namePh":"Your name","form.email":"Email","form.emailPh":"you@example.com","form.message":"Message","form.messagePh":"Type your message here","form.submit":"Send message","form.sending":"Sending…","form.success":"Message sent. I’ll get back to you soon.","form.error":"Something went wrong. Please try again or email me directly.","form.activation":"This form is awaiting activation. Please email me directly.","form.note":"By submitting, you agree that I may use this information only to respond to your inquiry.",
       "footer":"© 2026 Vista Wei · Designed & built by me","footer.resume":"View resume"
     }
   };
@@ -523,6 +551,70 @@
   });
 
   applyLang();
+
+  // ===== Contact form: FormSubmit AJAX endpoint with native fallback =====
+  const contactForm = document.getElementById("contactForm");
+  const formStatus = document.getElementById("formStatus");
+  const submitButton = contactForm.querySelector('button[type="submit"]');
+  const emailInput = contactForm.querySelector('input[name="email"]');
+  const replyToInput = contactForm.querySelector('input[name="_replyto"]');
+
+  function setFormStatus(state) {
+    const keyByState = {
+      sending: "form.sending",
+      success: "form.success",
+      error: "form.error",
+      activation: "form.activation"
+    };
+    const key = keyByState[state] || "";
+    formStatus.dataset.state = state || "";
+    formStatus.dataset.i18n = key;
+    formStatus.textContent = key ? I18N[lang][key] : "";
+  }
+
+  emailInput.addEventListener("input", () => {
+    replyToInput.value = emailInput.value.trim();
+  });
+
+  contactForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!contactForm.checkValidity()) {
+      contactForm.reportValidity();
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.setAttribute("aria-busy", "true");
+    setFormStatus("sending");
+
+    try {
+      const response = await fetch(contactForm.dataset.ajaxAction, {
+        method: "POST",
+        body: new FormData(contactForm),
+        headers: { Accept: "application/json" }
+      });
+      const result = await response.json();
+
+      if (!response.ok || String(result.success) !== "true") {
+        const submitError = new Error(result.message || "Form submission failed");
+        submitError.code = /activation/i.test(result.message || "")
+          ? "ACTIVATION_REQUIRED"
+          : "SUBMIT_FAILED";
+        throw submitError;
+      }
+
+      contactForm.reset();
+      replyToInput.value = "";
+      setFormStatus("success");
+    } catch (error) {
+      console.error("Contact form submission failed:", error);
+      setFormStatus(error.code === "ACTIVATION_REQUIRED" ? "activation" : "error");
+    } finally {
+      submitButton.disabled = false;
+      submitButton.removeAttribute("aria-busy");
+    }
+  });
 
   // ===== Mobile menu toggle =====
   const menuToggle = document.getElementById('menuToggle');

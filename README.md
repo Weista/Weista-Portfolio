@@ -43,6 +43,13 @@ Weista Resume Portfolio/
 - 文案统一在 `index.html` 的 `I18N`（中文为主，英文对应）；作品在 `PROJECTS`；工作经历在 `EXPERIENCE`；技能在 `SKILLS`。
 - 详情见 `docs/content-template.md`。
 
+## 联系表单
+
+- 首页联系表单通过 FormSubmit 将留言发送到 `leiniao2086@hotmail.com`，无需服务器或构建步骤。
+- 首次上线后提交一次表单，FormSubmit 会向收件邮箱发送激活邮件；点击邮件中的激活链接后，后续留言才会进入邮箱。
+- 更换收件邮箱时，同时更新 `index.html` 中表单的 `action` 和 `data-ajax-action`。
+- 激活后可在 FormSubmit 邮件中获取随机收件地址，用该地址替换前端裸露邮箱以降低垃圾邮件风险。
+
 ---
 
 ## 部署到 GitHub Pages（推荐，免费 + 自定义域名）
