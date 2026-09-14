@@ -118,8 +118,8 @@
 
   /* ---- Portfolio ---- */
   .portfolio{background:#fff;}
-  .cardgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
-  .pcard{display:block;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--color-line);box-shadow:var(--shadow);transition:.25s;position:relative;}
+  .cardgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:28px;}
+  .pcard{display:block;width:calc((100% - 56px) / 3);border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--color-line);box-shadow:var(--shadow);transition:.25s;position:relative;}
   .pcard:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(3,40,84,.10);}
   .pcard .cover{aspect-ratio:4/3;object-fit:cover;width:100%;}
   .pcard .pbody{padding:18px 20px 20px;}
@@ -196,14 +196,15 @@
     .nav-right{margin-left:0;}
     .menu-toggle{display:flex;}
     .features{grid-template-columns:1fr 1fr;}
-    .cardgrid{grid-template-columns:1fr 1fr;}
+    .pcard{width:calc((100% - 28px) / 2);}
     .skillgrid{grid-template-columns:1fr 1fr;}
     .ccol{grid-template-columns:1fr;}
   }
   /* Mobile */
   @media (max-width:720px){
     .nav .langbtn{font-size:12.5px;padding:6px 11px;}
-    .features,.cardgrid,.skillgrid{grid-template-columns:1fr;}
+    .features,.skillgrid{grid-template-columns:1fr;}
+    .pcard{width:100%;}
     .blob.b1{width:360px;height:360px;left:-150px;} .blob.b2{width:340px;height:340px;right:-140px;}
     .hero h1{font-size:clamp(32px,9vw,44px);}
     .avatar{width:176px;height:176px;}
@@ -309,7 +310,7 @@
     <div class="shead">
       <div class="eyebrow" data-i18n="portfolio.eyebrow">精选作品</div>
       <h2 data-i18n="portfolio.title">作品</h2>
-      <p data-i18n="portfolio.desc">一组代表性项目。在下方 PROJECTS 数组中追加即可持续收录新作品。</p>
+      <p data-i18n="portfolio.desc">近年来参与的大型设计项目作品</p>
     </div>
     <div class="cardgrid" id="projectGrid"></div>
   </div>
@@ -381,7 +382,7 @@
       "about.f3.t":"AI 工作流","about.f3.d":"将 AI 工具融入设计流程，与团队协作提升交付效率与质量。",
       "exp.eyebrow":"履历","exp.title":"工作经验","skills.eyebrow":"能力","skills.title":"技能",
       "skills.desc":"从 UI 起步的 PS 时代逐步成长为以 Figma 作为主流工具的 UI/UX 设计师，并结合前端知识与原型工具，辅助团队推进项目落地。AI 时代，依旧不断学习，合理利用 Figma MCP / Harness Agent 等 AI 工具，结合不同能力的 AI 模型提升设计工作效率与质量。","s1":"Figma","s2":"设计 Token","s3":"SwiftUI","s4":"React / Tailwind","s5":"Vue","s6":"无障碍 (WCAG)","s7":"数据可视化","s8":"RAG 与 AI 原型","s9":"设计运营",
-      "portfolio.eyebrow":"精选作品","portfolio.title":"作品","portfolio.desc":"一组代表性项目。在下方 PROJECTS 数组中追加即可持续收录新作品。",
+      "portfolio.eyebrow":"精选作品","portfolio.title":"作品","portfolio.desc":"近年来参与的大型设计项目作品",
       "contact.title":"联系我",
       "form.name":"姓名","form.namePh":"你的姓名","form.email":"邮箱","form.emailPh":"you@example.com","form.message":"留言","form.messagePh":"在这里输入你的留言","form.submit":"发送留言","form.sending":"正在发送…","form.success":"留言已发送，我会尽快回复你。","form.error":"发送失败，请稍后重试。","form.activation":"表单暂时不可用，请稍后再试。","form.note":"提交即表示你同意我仅使用这些信息回复本次咨询。",
       "footer":"© 2026 魏彤 · 由我设计与构建","footer.resume":"查看简历"
@@ -401,7 +402,7 @@
       "about.f3.t":"AI Workflow","about.f3.d":"Weave AI tools into the design flow and collaborate with teams to boost efficiency and delivery quality.",
       "exp.eyebrow":"Resume","exp.title":"Work Experience","skills.eyebrow":"Capabilities","skills.title":"Skills",
       "skills.desc":"I started in the Photoshop era of UI design and grew into a UI/UX designer whose primary tool is Figma — combining front-end knowledge with prototyping tools to help teams ship products. In the AI era, I keep learning and use AI tools like Figma MCP and Harness Agent with diverse AI models to improve design efficiency and quality.","s1":"Figma","s2":"Design Tokens","s3":"SwiftUI","s4":"React / Tailwind","s5":"Vue","s6":"Web Accessibility (WCAG)","s7":"Data Visualization","s8":"RAG & AI Prototyping","s9":"Design Ops",
-      "portfolio.eyebrow":"Selected Work","portfolio.title":"Portfolio","portfolio.desc":"A collection of representative projects. Append to the PROJECTS array below to publish more.",
+      "portfolio.eyebrow":"Selected Work","portfolio.title":"Portfolio","portfolio.desc":"Large-scale design projects I’ve contributed to in recent years.",
       "contact.title":"Contact me",
       "form.name":"Name","form.namePh":"Your name","form.email":"Email","form.emailPh":"you@example.com","form.message":"Message","form.messagePh":"Type your message here","form.submit":"Send message","form.sending":"Sending…","form.success":"Message sent. I’ll get back to you soon.","form.error":"Something went wrong. Please try again later.","form.activation":"This form is temporarily unavailable. Please try again later.","form.note":"By submitting, you agree that I may use this information only to respond to your inquiry.",
       "footer":"© 2026 Vista Wei · Designed & built by me","footer.resume":"View resume"
